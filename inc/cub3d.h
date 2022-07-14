@@ -6,7 +6,15 @@ typedef struct	s_cub
 {
 	void	*mlx;
 	void	*win;
+	char	*n_path;
+	char	*s_path;
+	char	*w_path;
+	char	*e_path;
+	char	*f_color;
+	char	*c_color;
 }				t_cub;
+
+void	ft_parse_file(char *filename);
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080

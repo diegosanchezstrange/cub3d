@@ -58,7 +58,7 @@ INCLUDES = -I ./${LIBFT}inc -I ./${MLX} -I ./inc
 all: ${NAME}
 
 run: all
-	./cub3d
+	./cub3d test_maps/ex.cub
 
 ${OBJS_DIR}/%.o: ${SRCS_DIR}/%.c
 	${CC} ${CFLAGS} ${INCLUDES} -c $< -o $@ 
