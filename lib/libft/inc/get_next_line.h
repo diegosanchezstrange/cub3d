@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 20:47:45 by dsanchez          #+#    #+#             */
-/*   Updated: 2021/10/26 21:08:55 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/07/14 22:42:44 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 char	*ft_strjoin_gnl(char *s1, char *s2);
-size_t	ft_strlen(char const *s);
+size_t	ft_strlen_gnl(char const *s);
 char	*get_next_line(int fd);
 
 #endif

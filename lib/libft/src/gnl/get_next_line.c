@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 20:47:40 by dsanchez          #+#    #+#             */
-/*   Updated: 2021/10/26 21:09:08 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/07/14 22:41:58 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_line(char *line)
 		l++;
 	if (line[l] == '\n')
 		l++;
-	nline = malloc(ft_strlen(line) - l + 1);
+	nline = malloc(ft_strlen_gnl(line) - l + 1);
 	while (line[l])
 		nline[i++] = line[l++];
 	nline[i] = 0;
