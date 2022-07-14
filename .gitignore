@@ -1,0 +1,6 @@
+*.a
+lib/*
+obj/
+lib/
+
+cub3d
