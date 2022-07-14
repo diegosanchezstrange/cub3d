@@ -14,7 +14,11 @@ typedef struct	s_cub
 	char	*c_color;
 }				t_cub;
 
-void	ft_parse_file(char *filename);
+// parse/utils.c
+int	is_valid_param(t_cub *cub, char *line, int *num);
+
+// parse/parse.c
+int	ft_parse_file(char *filename, t_cub *cub);
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080

@@ -1,33 +1,42 @@
 #include <cub3d.h>
 #include <fcntl.h>
 
-int	ft_parse_info()
+int	ft_parse_map()
 {
+	return (0);
 }
 
 int	ft_parse_line(char *line, t_cub *cub, int *num)
 {
-	char	**split;
-
-	split = ft_split(line, ' ');
-	if (ft_strlen(split) < 2 && *num < 6)
-		return (1);
-	return (0);
+	(void) cub;
+	if (*num < 6)
+		return (is_valid_param(cub, line, num));
+	else 
+		return (ft_parse_map());
 }
 
-void	ft_parse_file(char *filename, t_cub *cub)
+int	ft_parse_file(char *filename, t_cub *cub)
 {
 	int		fd;
 	int		num;
 	char	*line;
 
 	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		exit(1);
 	line = get_next_line(fd);
 	while (line)
 	{
-		ft_printf(line);
 		if (ft_strlen(line) > 1)
-			ft_parse_line(line, cub, &num);
+		{
+			if (!ft_parse_line(line, cub, &num))
+			{
+				ft_printf("Error in : %s", line);
+				return (0);
+			}
+		}
 		line = get_next_line(fd);
 	}
+	close(fd);
+	return (1);
 }
