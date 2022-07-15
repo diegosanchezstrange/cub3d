@@ -8,8 +8,11 @@ SRCS_MAIN	= main.c
 
 SRCS_PARSE	= parse.c utils.c
 
+SRCS_UTILS	= frees.c
+
 SRCS		= ${SRCS_MAIN} \
-				$(addprefix parse/, $(SRCS_PARSE))
+				$(addprefix parse/, $(SRCS_PARSE)) \
+				$(addprefix utils/, $(SRCS_UTILS)) \
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -18,7 +21,8 @@ SRCS_DIR = src
 OBJS_DIR = obj
 
 OBJS_DIRS	= ${OBJS_DIR} \
-				$(addprefix $(OBJS_DIR)/, parse)
+				$(addprefix $(OBJS_DIR)/, parse) \
+				$(addprefix $(OBJS_DIR)/, utils) \
 
 LIBFT_NAME	= libft.a
 

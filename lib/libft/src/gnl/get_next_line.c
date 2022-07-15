@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 20:47:40 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/07/14 22:41:58 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/07/15 22:22:55 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ char	*get_res(char *line)
 	if (!line)
 		return (NULL);
 	while (line[l] && line[l] != '\n')
-		l++;
-	if (line[l] == '\n')
 		l++;
 	res = malloc(l + 1);
 	if (!res)

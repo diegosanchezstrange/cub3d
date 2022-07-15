@@ -1,18 +1,23 @@
 #ifndef FDF_H
 # define FDF_H
 # include <libft.h>
+# include <fcntl.h>
 
 typedef struct	s_cub
 {
 	void	*mlx;
 	void	*win;
-	char	*n_path;
-	char	*s_path;
-	char	*w_path;
-	char	*e_path;
-	char	*f_color;
-	char	*c_color;
+	char	*NO_path;
+	char	*SO_path;
+	char	*WE_path;
+	char	*EA_path;
+	int		F_color[3];
+	int		C_color[3];
 }				t_cub;
+
+//	utils/splits.c
+size_t	ft_splitlen(char **split);
+void	ft_free_split(char **split);
 
 // parse/utils.c
 int	is_valid_param(t_cub *cub, char *line, int *num);

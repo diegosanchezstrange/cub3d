@@ -1,17 +1,61 @@
 #include <cub3d.h>
 
+/*
+ * Check if the files for the textures exist and save the path
+ * on the cub structure.
+ */
 int	check_direction_path(t_cub *cub, char **split, int *num)
 {
-	(void) split;
-	(void) cub;
+	int		fd;
+	char	*path;
+
+	if (ft_splitlen(split) != 2)
+		return (0);
+	path = ft_strdup(split[1]);
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	close(fd);
+	if (!ft_strncmp(split[0], "NO", 2))
+		cub->NO_path = path;
+	else if (!ft_strncmp(split[0], "SO", 2))
+		cub->SO_path = path;
+	else if (!ft_strncmp(split[0], "WE", 2)) 
+		cub->WE_path = path;
+	else if (!ft_strncmp(split[0], "EA", 2))
+		cub->EA_path = path;
+	ft_free_split(split);
 	*num += 1;
 	return (1);
 }
 
+/*
+ * Check if the colors for the floor and cealing are valid 
+ * and save them on the cub structure.
+ */
 int	check_color_code(t_cub *cub, char **split, int *num)
 {
-	(void) split;
-	(void) cub;
+	char	**colors;
+	int		i;
+	int		n;
+
+	i = 0;
+	if (ft_splitlen(split) != 2)
+		return (0);
+	colors = ft_split(split[1], ',');
+	if (ft_splitlen(colors) != 3)
+		return (0);
+	while (i < 3)
+	{
+		n = ft_atoi(colors[i]);
+		if (n < 0 | n > 255)
+			return (0);
+		else if (!ft_strncmp(split[0], "F", 1))
+			cub->F_color[i] = n;
+		else if (!ft_strncmp(split[0], "C", 1))
+			cub->C_color[i] = n;
+		i++;
+	}
 	*num += 1;
 	return (1);
 }
