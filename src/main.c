@@ -1,5 +1,7 @@
 #include <cub3d.h>
 #include <mlx.h>
+#include <limits.h>
+#include <stdlib.h>
 
 int	ft_hooks(int keycode, t_cub *vars)
 {
@@ -17,11 +19,26 @@ int	ft_hooks(int keycode, t_cub *vars)
 int	main(int argc, char **argv)
 {
 	t_cub	prog;
+	int		i;
 
+	i = 0;
+	char *str;
+
+	str = calloc(0, sizeof(char));
+	free(str);
+	free(str);
 	if (argc != 2)
 		return (1);
+	prog.map = ft_calloc(1, sizeof(char *));
+	prog.map[0] = NULL;
+	prog.map_w = 0;
+	prog.map_h = 0;
 	if (!ft_parse_file(argv[1], &prog))
 		return (2);
+	while (prog.map[i])
+		ft_printf("|%s|\n", prog.map[i++]);
+	ft_printf("%d\n", prog.map_w);
+	ft_printf("%d\n", prog.map_h);
 	//prog.mlx = mlx_init();
 	//prog.win = mlx_new_window(prog.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3d");
 	//mlx_hook(prog.win, 2, 1L << 0, ft_hooks, &prog);

@@ -1,5 +1,6 @@
 #ifndef FDF_H
 # define FDF_H
+
 # include <libft.h>
 # include <fcntl.h>
 
@@ -13,6 +14,9 @@ typedef struct	s_cub
 	char	*EA_path;
 	int		F_color[3];
 	int		C_color[3];
+	char	**map;
+	size_t	map_w;
+	size_t	map_h;
 }				t_cub;
 
 //	utils/splits.c
