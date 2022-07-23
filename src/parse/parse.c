@@ -1,143 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/22 20:38:02 by dsanchez          #+#    #+#             */
+/*   Updated: 2022/07/23 18:32:49 by dsanchez         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <cub3d.h>
 #include <fcntl.h>
 
-int	ft_check_space_y(t_cub *cub, size_t y, size_t x)
+int	ft_check_valid_map_line(t_cub *cub, char *line)
 {
-	size_t	i;
-
-	i = y;
-	while (cub->map[i])
-	{
-		if (cub->map[i][x] == '1')
-			break ;
-		else if (cub->map[i][x] != ' ')
-			return (0);
-		i++;
-	}
-	i = y;
-	while (cub->map[i])
-	{
-		if (cub->map[i][x] == '1')
-			break ;
-		else if (cub->map[i][x] != ' ')
-			return (0);
-		if (i == 0)
-			break;
-		i--;
-	}
-	return (1);
-}
-
-int	ft_check_space_x(t_cub *cub, size_t y, size_t x)
-{
-	size_t	j;
-
-	j = x;
-	while (j < cub->map_w)
-	{
-		if (cub->map[y][j] == '1')
-			break ;
-		else if (cub->map[y][j] != ' ')
-			return (0);
-		j++;
-	}
-	j = x;
-	while (j)
-	{
-		if (cub->map[y][j] == '1')
-			break ;
-		else if (cub->map[y][j] != ' ')
-			return (0);
-		if (j == 0)
-			break;
-		j--;
-	}
-	return (1);
-}
-
-int	ft_check_closed(t_cub *cub)
-{
-	size_t	i;
-	size_t	j;
+	int	i;
 
 	i = 0;
-	while (cub->map[i])
+	while (line[i])
 	{
-		j = 0;
-		while (cub->map[i][j])
+		if (!ft_strchr("10 NSEW", line[i]))
 		{
-			if ((i == 0 || j == 0 || i == cub->map_h || j == cub->map_w)
-					&& !(cub->map[i][j] == '1' || cub->map[i][j] == ' '))
-				return (0);
-			if (cub->map[i][j] == ' ')
-			{
-				if (!ft_check_space_y(cub, i, j) || !ft_check_space_x(cub, i, j) )
-					return (0);
-			}
-			j++;
+			ft_printf("MAP ERROR: %c is not a valid char\n", line[i]);
+			return (0);
 		}
+		else if (ft_strchr("NSEW", line[i]) && cub->starting_point != 0)
+		{
+			ft_printf("MAP ERROR: Only one starting point valid.\n");
+			return (0);
+		}
+		else if (ft_strchr("NSEW", line[i]) && cub->starting_point == 0)
+			cub->starting_point = line[i];
 		i++;
 	}
 	return (1);
-}
-
-void ft_resize_map(t_cub *cub)
-{
-	size_t	i;
-	size_t	j;
-	char	*tmp;
-
-	i = -1;
-	while (cub->map[++i])
-	{
-		if (ft_strlen(cub->map[i]) == cub->map_w)
-			continue ;
-		tmp = ft_calloc(cub->map_w + 1, sizeof(char));
-		j = -1;
-		while (cub->map[i][++j])
-			tmp[j] = cub->map[i][j];
-		while (j < cub->map_w)
-			tmp[j++] = ' ';
-		tmp[j] = 0;
-		free(cub->map[i]);
-		cub->map[i] = tmp;
-	}
 }
 
 int	ft_parse_map(t_cub *cub, char *line)
 {
 	int		i;
 	size_t	w;
-	char	**newMap;
+	char	**new_map;
 
-	i = 0;
+	i = -1;
+	if (!ft_check_valid_map_line(cub, line))
+		return (0);
 	w = ft_strlen(line);
-	while (line[i])
-	{
-		if (!ft_strchr("10 NSEW", line[i++]))
-			return (0);
-	}
 	cub->map_h++;
 	if (w > cub->map_w)
 		cub->map_w = w;
-	newMap = ft_calloc(cub->map_h + 1, sizeof(char *));
-	i = -1;
+	new_map = ft_calloc(cub->map_h + 1, sizeof(char *));
 	while (cub->map[++i])
-		newMap[i] = cub->map[i];
-	newMap[i] = line;
-	newMap[i + 1] = NULL;
+		new_map[i] = cub->map[i];
+	new_map[i] = line;
+	new_map[i + 1] = NULL;
 	free(cub->map);
-	cub->map = newMap;
+	cub->map = new_map;
 	return (1);
 }
 
 int	ft_parse_line(char *line, t_cub *cub, int *num)
 {
 	int	ret;
-	
+
 	if (*num < 6 && *num != -1)
 		ret = is_valid_param(cub, line, num);
-	else 
+	else
 	{
 		*num = -1;
 		ret = ft_parse_map(cub, line);

@@ -15,6 +15,7 @@ typedef struct	s_cub
 	int		F_color[3];
 	int		C_color[3];
 	char	**map;
+	char	starting_point;
 	size_t	map_w;
 	size_t	map_h;
 }				t_cub;
@@ -24,10 +25,14 @@ size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
 
 // parse/utils.c
-int	is_valid_param(t_cub *cub, char *line, int *num);
+int		is_valid_param(t_cub *cub, char *line, int *num);
+
+// parse/parse_map.c
+int		ft_check_closed(t_cub *cub);
+void	ft_resize_map(t_cub *cub);
 
 // parse/parse.c
-int	ft_parse_file(char *filename, t_cub *cub);
+int		ft_parse_file(char *filename, t_cub *cub);
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080

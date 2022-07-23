@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
+/*   Updated: 2022/07/23 18:37:01 by dsanchez         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <cub3d.h>
 
 /*
@@ -20,7 +32,7 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 		cub->NO_path = path;
 	else if (!ft_strncmp(split[0], "SO", 2))
 		cub->SO_path = path;
-	else if (!ft_strncmp(split[0], "WE", 2)) 
+	else if (!ft_strncmp(split[0], "WE", 2))
 		cub->WE_path = path;
 	else if (!ft_strncmp(split[0], "EA", 2))
 		cub->EA_path = path;
@@ -69,12 +81,12 @@ int	is_valid_param(t_cub *cub, char *line, int *num)
 
 	n = 0;
 	split = ft_split(line, ' ');
-	while(split[n])
+	while (split[n])
 		n++;
 	first = split[0];
 	l = ft_strlen(first);
-	if (!ft_strncmp(first, "NO", l) || !ft_strncmp(first, "SO", l) 
-			|| !ft_strncmp(first, "WE", l) || !ft_strncmp(first, "EA", l))
+	if (!ft_strncmp(first, "NO", l) || !ft_strncmp(first, "SO", l)
+		|| !ft_strncmp(first, "WE", l) || !ft_strncmp(first, "EA", l))
 		return (check_direction_path(cub, split, num));
 	if (!ft_strncmp(first, "F", l) || !ft_strncmp(first, "C", l))
 		return (check_color_code(cub, split, num));
