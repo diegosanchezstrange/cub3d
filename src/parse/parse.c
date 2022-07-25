@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:38:02 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/07/23 18:32:49 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/07/25 20:27:08 by mclerico         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,17 @@ int	ft_check_valid_map_line(t_cub *cub, char *line)
 			ft_printf("MAP ERROR: %c is not a valid char\n", line[i]);
 			return (0);
 		}
-		else if (ft_strchr("NSEW", line[i]) && cub->starting_point != 0)
+		else if (ft_strchr("NSEW", line[i]) && cub->starting_way != 0)
 		{
 			ft_printf("MAP ERROR: Only one starting point valid.\n");
 			return (0);
 		}
-		else if (ft_strchr("NSEW", line[i]) && cub->starting_point == 0)
-			cub->starting_point = line[i];
+		else if (ft_strchr("NSEW", line[i]) && cub->starting_way == 0)
+		{
+			cub->starting_way = line[i];
+			cub->starting_point.x = i;
+			cub->starting_point.y = cub->map_h;
+		}
 		i++;
 	}
 	return (1);

@@ -4,10 +4,24 @@
 # include <libft.h>
 # include <fcntl.h>
 
+typedef struct s_data{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+typedef struct s_point{
+	double	x;
+	double	y;
+	double	mod;
+	double	angle;
+}				t_point;
 typedef struct	s_cub
 {
 	void	*mlx;
 	void	*win;
+	t_data	img;
 	char	*NO_path;
 	char	*SO_path;
 	char	*WE_path;
@@ -15,7 +29,8 @@ typedef struct	s_cub
 	int		F_color[3];
 	int		C_color[3];
 	char	**map;
-	char	starting_point;
+	char	starting_way;
+	t_point	starting_point;
 	size_t	map_w;
 	size_t	map_h;
 }				t_cub;
@@ -23,14 +38,11 @@ typedef struct	s_cub
 //	utils/splits.c
 size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
-
 // parse/utils.c
 int		is_valid_param(t_cub *cub, char *line, int *num);
-
 // parse/parse_map.c
 int		ft_check_closed(t_cub *cub);
 void	ft_resize_map(t_cub *cub);
-
 // parse/parse.c
 int		ft_parse_file(char *filename, t_cub *cub);
 
