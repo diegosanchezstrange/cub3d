@@ -50,8 +50,6 @@ void ft_start(t_cub prog);
 void	plot_line(t_point p1, t_point p2, t_data img, int color);
 double	ft_abs(double num);
 
-# define W 1920
-# define H 1080
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
 

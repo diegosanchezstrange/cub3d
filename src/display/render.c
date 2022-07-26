@@ -2,7 +2,9 @@
 #include <mlx.h>
 #include <limits.h>
 #include <stdlib.h>
-
+#include <stdio.h>
+const int W = 1920;
+const int H = 1080;
 double	ft_abs(double num)
 {
 	if (num > 0)
@@ -27,7 +29,10 @@ void ft_start(t_cub prog)
 	dir.x = 0;
 	dir.y=-1;
 	i = 0;
-	while(i < W)	
+	hit = 0;
+	printf("HOLA\n");
+	printf("%d\n", W);
+	while(i < (int)W)	
 	{
 		map_x =(int)prog.pos.x;
 		map_y = (int)prog.pos.y;
@@ -62,6 +67,7 @@ void ft_start(t_cub prog)
 			stepy = 1;
 			dist[1].y = (map_y + 1 - prog.pos.y)*dist[0].y;
 		}
+		printf("TRAZA3\n");
 		while (hit == 0)
 		{
 			if (dist[1].x < dist[1].y)
@@ -99,6 +105,7 @@ void ft_start(t_cub prog)
 		pi.x = pi.y = i;
 		pi.y = draw_start;
 		po.y = draw_end;
+		printf("TRAZA2\n");
 		plot_line(pi, po, prog.img, color);
 		i++;
 	}
