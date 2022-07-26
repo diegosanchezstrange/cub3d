@@ -1,8 +1,9 @@
-#ifndef FDF_H
-# define FDF_H
+#ifndef CUB3D_H
+# define CUB3D_H
 
 # include <libft.h>
 # include <fcntl.h>
+# include <mlx.h>
 
 typedef struct s_data{
 	void	*img;
@@ -30,7 +31,7 @@ typedef struct	s_cub
 	int		C_color[3];
 	char	**map;
 	char	starting_way;
-	t_point	starting_point;
+	t_point	pos;
 	size_t	map_w;
 	size_t	map_h;
 }				t_cub;
@@ -45,9 +46,14 @@ int		ft_check_closed(t_cub *cub);
 void	ft_resize_map(t_cub *cub);
 // parse/parse.c
 int		ft_parse_file(char *filename, t_cub *cub);
+void ft_start(t_cub prog);
+void	plot_line(t_point p1, t_point p2, t_data img, int color);
+double	ft_abs(double num);
 
-# define SCREEN_WIDTH 1920
-# define SCREEN_HEIGHT 1080
+# define W 1920
+# define H 1080
+# define WALL 0xCCFFCC
+# define WALL_2 0x66FF66
 
 # define X_OFFSET 20
 # define Y_OFFSET 20

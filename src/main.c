@@ -12,6 +12,7 @@
 #include <mlx.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int	ft_hooks(int keycode, t_cub *vars)
 {
@@ -44,21 +45,23 @@ int	main(int argc, char **argv)
 	prog.map_w = 0;
 	prog.map_h = 0;
 	prog.starting_way = 0;
+	prog.pos.y = 0;
+	prog.pos.x = 0;
 	if (!ft_parse_file(argv[1], &prog))
 		return (2);
 	while (prog.map[i])
 		ft_printf("|%s|\n", prog.map[i++]);
 	ft_printf("%d\n", prog.map_w);
 	ft_printf("%d\n", prog.map_h);
-	ft_printf("%d\n",prog.starting_point.x);
-	ft_printf("%d\n",prog.starting_point.y);
+	printf("%f\n",prog.pos.x);
+	printf("%f\n",prog.pos.y);
 	prog.mlx = mlx_init();
-	prog.win = mlx_new_window(prog.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3d");
+	prog.win = mlx_new_window(prog.mlx, W, H, "cub3d");
 	mlx_hook(prog.win, 2, 1L << 0, ft_hooks, &prog);
 	prog.img.img = mlx_new_image(prog.mlx, 1920, 1080);
 	prog.img.addr = mlx_get_data_addr(prog.img.img, &(prog.img.bits_per_pixel),
 			&(prog.img.line_length), &(prog.img.endian));
-
+	ft_start(prog);
 	mlx_loop(prog.mlx);
 	return (0);
 }
