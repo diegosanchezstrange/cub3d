@@ -29,13 +29,13 @@ void	plot_line(t_point p1, t_point p2, t_data img, int color)
 	s = (t_point){ft_bigger(p1.x, p2.x), ft_bigger(p1.y, p2.y), 0, 0};
 	d = (t_point){ft_abs(p2.x - p1.x), ft_abs(p2.y - p1.y) * -1, 0, 0};
 	err[0] = d.x + d.y;
+	printf("p1: x %f, y %f\n", p1.x, p1.y);
+	printf("p2: x %f, y %f\n", p2.x, p2.y);
 	printf("error: %f\n",err[0]);
 	p0 = p1;
 	while (p1.x != p2.x || p1.y != p2.y)
 	{
-		//printf("traza plot\n");
 		my_mlx_pixel_put(&img, p1.x, p1.y, color);
-//		printf("error: %f\n",err[0]);
 		err[1] = 2 * err[0];
 		if (err[1] >= d.y)
 		{
