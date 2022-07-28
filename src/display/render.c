@@ -3,8 +3,6 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
-const int W = 1920;
-const int H = 1080;
 double	ft_abs(double num)
 {
 	if (num > 0)
@@ -32,7 +30,7 @@ void ft_start(t_cub prog)
 	hit = 0;
 	printf("HOLA\n");
 	printf("%d\n", W);
-	while(i < (int)W)	
+	while(i < (int)10)	
 	{
 		map_x =(int)prog.pos.x;
 		map_y = (int)prog.pos.y;

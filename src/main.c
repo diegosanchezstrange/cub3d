@@ -13,7 +13,6 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 int	ft_hooks(int keycode, t_cub *vars)
 {
 	if (keycode == KEY_ESC)
@@ -31,10 +30,9 @@ int	main(int argc, char **argv)
 {
 	t_cub	prog;
 	int		i;
-
-	i = 0;
 	char *str;
 
+	i = 0;
 	str = calloc(0, sizeof(char));
 	free(str);
 	free(str);

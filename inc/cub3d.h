@@ -52,6 +52,8 @@ double	ft_abs(double num);
 
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
+# define W 1920
+# define H 1080
 
 # define X_OFFSET 20
 # define Y_OFFSET 20
