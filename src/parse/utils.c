@@ -60,7 +60,7 @@ int	check_color_code(t_cub *cub, char **split, int *num)
 	while (i < 3)
 	{
 		n = ft_atoi(colors[i]);
-		if (n < 0 | n > 255)
+		if ((n < 0) | (n > 255))
 			return (0);
 		else if (!ft_strncmp(split[0], "F", 1))
 			cub->F_color[i] = n;

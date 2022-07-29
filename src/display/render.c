@@ -41,10 +41,14 @@ int worldMap[24][24]=
 
 void ft_start(t_cub prog)
 {
-	double posX = prog.pos.y, posY = prog.pos.x;  //x and y start position
-	double dirX = 1, dirY = -1; //initial direction vector
-	double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
+	double posX = prog.pos.x, posY = prog.pos.y;  //x and y start position
+	double dirX = 0, dirY = -1; //initial direction vector
+	double planeX = 0.66, planeY = 0; //the 2d raycaster version of camera plane
 	t_point pi, po;
+
+
+	int mapX = (int) posX;
+	int mapY = (int) posY;
 
 
     for(int x = 0; x < W; x++)
@@ -53,9 +57,14 @@ void ft_start(t_cub prog)
       double cameraX = 2 * x / (double)W - 1; //x-coordinate in camera space
       double rayDirX = dirX + planeX * cameraX;
       double rayDirY = dirY + planeY * cameraX;
+
+	  printf("cameraX: %f\n", cameraX);
+	  printf("RayDirX: %f\n", rayDirX);
+	  printf("RayDirY: %f\n\n", rayDirY);
+
       //which box of the map we're in
-      int mapX = (int) posX;
-      int mapY = (int) posY;
+      mapX = (int) posX;
+      mapY = (int) posY;
 
       //length of ray from current position to next x or y-side
       double sideDistX;
@@ -126,8 +135,8 @@ void ft_start(t_cub prog)
         }
         //Check if ray has hit a wall
 		printf("MAPX: %d, MAPY: %d\n", mapX, mapY);
-		printf("(X, Y): %c\n", prog.map[mapX][mapY]);
-        if(prog.map[mapX][mapY] ==  '1') 
+		printf("(X, Y): %c\n", prog.map[mapY][mapX]);
+        if(prog.map[mapY][mapX] ==  '1') 
 			hit = 1;
       }
 	  printf("sideDistX : %f \n", sideDistX);
@@ -145,8 +154,10 @@ void ft_start(t_cub prog)
       else          
 		  perpWallDist = (sideDistY - deltaDistY);
 
+	  printf("Wall Dist: %f, side %d\n", perpWallDist, side);
       //Calculate height of line to draw on screen
       int lineHeight = (int)(H / perpWallDist);
+	  printf("Line H: %d\n", lineHeight);
 
       //calculate lowest and highest pixel to fill in current stripe
       int drawStart = -lineHeight / 2 + H / 2;
@@ -157,7 +168,7 @@ void ft_start(t_cub prog)
 		  drawEnd = H - 1;
 	  int color;
 	  color = 0;
-		if(prog.map[mapX][mapY] == '1')
+		if(prog.map[mapY][mapX] == '1')
 			color = WALL;
 		if (side == 1)
 			color = WALL_2;
@@ -170,6 +181,10 @@ void ft_start(t_cub prog)
 	  printf("drawStart: %d\n", drawStart);
 	  printf("drawEnd: %d\n", drawEnd);
 	}
+  mapX = (int) posX;
+  mapY = (int) posY;
+	printf("mapX: %d, mapY: %d\n", mapX, mapY);
+	printf("START mapX: %d, mapY: %d Dir : %c\n", mapX, mapY, prog.map[mapX][mapY]);
 	mlx_put_image_to_window(prog.mlx, prog.win, prog.img.img, 0, 0);
 }
 

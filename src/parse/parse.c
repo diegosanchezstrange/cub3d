@@ -92,6 +92,7 @@ int	ft_parse_file(char *filename, t_cub *cub)
 	if (fd == -1)
 		exit(1);
 	line = get_next_line(fd);
+	num = 0;
 	while (line)
 	{
 		if (ft_strlen(line) > 1)

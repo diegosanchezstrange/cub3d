@@ -56,7 +56,7 @@ int	main(int argc, char **argv)
 	prog.mlx = mlx_init();
 	prog.win = mlx_new_window(prog.mlx, W, H, "cub3d");
 	mlx_hook(prog.win, 2, 1L << 0, ft_hooks, &prog);
-	prog.img.img = mlx_new_image(prog.mlx, 1920, 1080);
+	prog.img.img = mlx_new_image(prog.mlx, W, H);
 	prog.img.addr = mlx_get_data_addr(prog.img.img, &(prog.img.bits_per_pixel),
 			&(prog.img.line_length), &(prog.img.endian));
 	ft_start(prog);

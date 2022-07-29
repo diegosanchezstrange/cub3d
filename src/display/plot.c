@@ -6,7 +6,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x >= 1920 || y >= 1080 || y < 0 || x < 0)
+	if (x >= W || y >= H || y < 0 || x < 0)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
@@ -24,7 +24,7 @@ void	plot_line(t_point p1, t_point p2, t_data img, int color)
 	t_point	s;
 	t_point	d;
 	double		err[2];
-	t_point	p0;
+	//t_point	p0;
 
 	s = (t_point){ft_bigger(p1.x, p2.x), ft_bigger(p1.y, p2.y), 0, 0};
 	d = (t_point){ft_abs(p2.x - p1.x), ft_abs(p2.y - p1.y) * -1, 0, 0};
@@ -32,7 +32,7 @@ void	plot_line(t_point p1, t_point p2, t_data img, int color)
 	printf("p1: x %f, y %f\n", p1.x, p1.y);
 	printf("p2: x %f, y %f\n", p2.x, p2.y);
 	printf("error: %f\n",err[0]);
-	p0 = p1;
+	//p0 = p1;
 	while (p1.x != p2.x || p1.y != p2.y)
 	{
 		my_mlx_pixel_put(&img, p1.x, p1.y, color);
