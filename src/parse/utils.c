@@ -81,6 +81,7 @@ int	is_valid_param(t_cub *cub, char *line, int *num)
 
 	n = 0;
 	split = ft_split(line, ' ');
+	free(line);
 	while (split[n])
 		n++;
 	first = split[0];

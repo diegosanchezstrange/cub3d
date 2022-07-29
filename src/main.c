@@ -4,21 +4,19 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */ /*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */ /*   Updated: 2022/07/25 20:18:44 by mclerico         ###   ########.fr       */
+/*                                                +#+#+#+#+#+   +#+           */ 
+/*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */ 
+/*   Updated: 2022/07/25 20:18:44 by mclerico         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-#include <mlx.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <stdio.h>
+
 int	ft_hooks(int keycode, t_cub *vars)
 {
 	if (keycode == KEY_ESC)
 	{
-		//ft_free_all(vars);
-		mlx_destroy_window(vars->mlx, vars->win);
+		ft_free_all(vars);
 		//free(vars.mlx);
 		exit(0);
 		return (1);

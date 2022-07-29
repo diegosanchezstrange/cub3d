@@ -31,3 +31,10 @@ void	ft_free_split(char **split)
 		free(split[i++]);
 	free(split);
 }
+
+void ft_free_all(t_cub *cub)
+{
+	ft_free_split(cub->map);	
+	mlx_destroy_window(cub->mlx, cub->win);
+	mlx_destroy_image(cub->mlx, cub->img.img);
+}

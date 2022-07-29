@@ -4,6 +4,9 @@
 # include <libft.h>
 # include <fcntl.h>
 # include <mlx.h>
+# include <limits.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 typedef struct s_data{
 	void	*img;
@@ -36,11 +39,14 @@ typedef struct	s_cub
 	size_t	map_h;
 }				t_cub;
 
-//	utils/splits.c
+//	utils/frees.c
 size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
+void	ft_free_all(t_cub *cub);
+
 // parse/utils.c
 int		is_valid_param(t_cub *cub, char *line, int *num);
+
 // parse/parse_map.c
 int		ft_check_closed(t_cub *cub);
 void	ft_resize_map(t_cub *cub);

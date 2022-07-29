@@ -36,7 +36,6 @@ int	ft_check_valid_map_line(t_cub *cub, char *line)
 			cub->starting_way = line[i];
 			cub->pos.x = (double)i;
 			cub->pos.y = (double)cub->map_h;
-			printf("TRAZA1 %f %f\n", cub->pos.x, cub->pos.y);
 		}
 		i++;
 	}
