@@ -6,7 +6,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x >= W || y >= H || y < 0 || x < 0)
+	if (x >= WIDTH || y >= HEIGHT || y < 0 || x < 0)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
@@ -46,30 +46,3 @@ void	plot_line(t_point p1, t_point p2, t_data img, int color)
 		}
 	}
 }
-/*
-void	ft_try_lines(t_coord *matrix, t_prog *f)
-{
-	int		j;
-
-	j = 0;
-	ft_bzero(f->img.addr, W_WINDOW * H_WINDOW * (f->img.bits_per_pixel / 8));
-	if (f->move_x == 0 && f->move_y == 0)
-		ft_center(matrix, f);
-	else
-		ft_handle(matrix, f);
-	while (j < f->h * f->w)
-	{
-		if ((j + 1) % f->w != 0)
-			plot_line((matrix[j]), (matrix[j + 1]), f->img);
-		j++;
-	}
-	j = 0;
-	while (j + f->w < f->h * f->w)
-	{
-		plot_line((matrix[j]), (matrix[(f->w) + j]), f->img);
-		j++;
-	}
-	mlx_put_image_to_window(f->mlx, f->win, f->img.img, 0, 0);
-	ft_legend(f);
-}
-*/

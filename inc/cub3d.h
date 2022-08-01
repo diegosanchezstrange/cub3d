@@ -12,12 +12,23 @@ typedef struct s_data{
 	int		line_length;
 	int		endian;
 }				t_data;
+
 typedef struct s_point{
 	double	x;
 	double	y;
 	double	mod;
 	double	angle;
 }				t_point;
+
+typedef struct s_keys{
+	int	W;
+	int	A;
+	int	S;
+	int	D;
+	int	RIGHT;
+	int	LEFT;
+}				t_keys;
+
 typedef struct	s_cub
 {
 	void	*mlx;
@@ -37,6 +48,7 @@ typedef struct	s_cub
 	size_t	map_w;
 	size_t	map_h;
 	int		move; // 0 right rotation, 1 left rotation
+	t_keys	keys;
 }				t_cub;
 
 //	utils/splits.c
@@ -46,20 +58,20 @@ void	ft_free_split(char **split);
 int		is_valid_param(t_cub *cub, char *line, int *num);
 // parse/parse_map.c
 int		ft_check_closed(t_cub *cub);
-void initialize_pos(t_cub *prog);
-void ft_move(t_cub *prog);
-void ft_rotate(t_cub *prog);
+void 	initialize_pos(t_cub *prog);
+void 	ft_move(t_cub *prog);
+void 	ft_rotate(t_cub *prog);
 void	ft_resize_map(t_cub *cub);
 // parse/parse.c
 int		ft_parse_file(char *filename, t_cub *cub);
-void ft_start(t_cub *prog);
+int		ft_start(t_cub *prog);
 void	plot_line(t_point p1, t_point p2, t_data img, int color);
 double	ft_abs(double num);
 
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
-# define W 640
-# define H 480
+# define WIDTH 640
+# define HEIGHT 480
 
 # define X_OFFSET 20
 # define Y_OFFSET 20
