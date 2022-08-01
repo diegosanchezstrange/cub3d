@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:38:02 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/07/26 21:43:33 by mclerico         ###   ########.fr       */
+/*   Updated: 2022/08/01 21:21:09 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	ft_check_valid_map_line(t_cub *cub, char *line)
 			cub->starting_way = line[i];
 			cub->pos.x = (double)i;
 			cub->pos.y = (double)cub->map_h;
-			printf("TRAZA1 %f %f\n", cub->pos.x, cub->pos.y);
 		}
 		i++;
 	}

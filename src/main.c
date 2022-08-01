@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */ 
 /*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */ 
-/*   Updated: 2022/08/01 21:09:55 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/01 21:13:41 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,6 @@ int	main(int argc, char **argv)
 		return (2);
 	while (prog.map[i])
 		ft_printf("|%s|\n", prog.map[i++]);
-	ft_printf("%d\n", prog.map_w);
-	ft_printf("%d\n", prog.map_h);
-	printf("%f\n",prog.pos.x);
-	printf("%f\n",prog.pos.y);
 	prog.mlx = mlx_init();
 	prog.win = mlx_new_window(prog.mlx, WIDTH, HEIGHT, "cub3d");
 
@@ -94,6 +90,7 @@ int	main(int argc, char **argv)
 			&(prog.img.line_length), &(prog.img.endian));
 	initialize_pos(&prog);
 	//ft_start(&prog);
+	init_textures(&prog);
 	mlx_loop_hook(prog.mlx, ft_start, &prog);
 	mlx_loop(prog.mlx);
 	return (0);

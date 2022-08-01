@@ -11,6 +11,7 @@ double	ft_abs(double num)
 		return num;
 	return num*-1;
 }
+
 void ft_rotate(t_cub *prog)
 {
 	double	oldDir_x;
@@ -19,7 +20,7 @@ void ft_rotate(t_cub *prog)
 
 	oldDir_x = prog->dir.x;
 	oldPlane_x = prog->plane.x;
-	s = 0.05;
+	s = 0.00005;
 	if (prog->keys.LEFT == 1)
 	{
 		prog->dir.x = (prog->dir.x * cos(-s)) - (prog->dir.y * sin(-s));
@@ -39,22 +40,24 @@ void ft_rotate(t_cub *prog)
 void ft_move(t_cub *prog)
 {
 	t_point pos;
+	double s;
 
 	pos.x = prog->pos.x;
 	pos.y = prog->pos.y;
+	s = 0.00005;
 	if (prog->keys.W == 1)
 	{
-		if (prog->map[(int)pos.y][(int)(pos.x + prog->dir.x * 0.05)] == '0')
-			prog->pos.x += prog->dir.x * 0.05;
-		if (prog->map[(int)(pos.y + prog->dir.y * 0.05)][(int)pos.x] == '0')
-			prog->pos.y += prog->dir.y * 0.05;
+		if (prog->map[(int)pos.y][(int)(pos.x + prog->dir.x *s)] == '0')
+			prog->pos.x += prog->dir.x * s;
+		if (prog->map[(int)(pos.y + prog->dir.y * s)][(int)pos.x] == '0')
+			prog->pos.y += prog->dir.y * s;
 	}		
 	else if (prog->keys.S == 1)
 	{
-		if (prog->map[(int)pos.y][(int)(pos.x - prog->dir.x * 0.05)] == '0')
-			prog->pos.x -= prog->dir.x * 0.05;
-		if (prog->map[(int)(pos.y - prog->dir.y * 0.05)][(int)pos.x] == '0')
-			prog->pos.y -= prog->dir.y * 0.05;
+		if (prog->map[(int)pos.y][(int)(pos.x - prog->dir.x * s)] == '0')
+			prog->pos.x -= prog->dir.x * s;
+		if (prog->map[(int)(pos.y - prog->dir.y * s)][(int)pos.x] == '0')
+			prog->pos.y -= prog->dir.y * s;
 	}	
 }
 
@@ -91,77 +94,93 @@ int ft_start(t_cub *prog)
 		dist[0].x= (rayDir.x == 0) ? 1e30 : ft_abs(1 / rayDir.x);
 		dist[0].y= (rayDir.y == 0) ? 1e30 : ft_abs(1 / rayDir.y);
 
+      int stepX;
+      int stepY;
+      int hit = 0; //was there a wall hit?
+      int side; //was a NS or a EW wall hit?
+      //calculate step and initial sideDist
+      if(rayDir.x < 0)
+      {
+        stepX = -1;
+        dist[1].x = (pos.x - mapX) * dist[0].x;
+      }
+      else
+      {
+        stepX = 1;
+        dist[1].x = (mapX + 1.0 - pos.x) * dist[0].x;
+      }
+      if(rayDir.y < 0)
+      {
+        stepY = -1;
+        dist[1].y = (pos.y - mapY) * dist[0].y;
+      }
+      else
+      {
+        stepY = 1;
+        dist[1].y = (mapY + 1.0 - pos.y) * dist[0].y;
+      }
+      while(hit == 0)
+      {
+        if(dist[1].x < dist[1].y)
+        {
+          dist[1].x += dist[0].x;
+          mapX += stepX;
+          side = 0;
+        }
+        else
+        { dist[1].y += dist[0].y;
+          mapY += stepY;
+          side = 1;
+        }
+        if(prog->map[mapY][mapX] ==  '1') 
+			hit = 1;
+      }
+      if(side == 0) 
+		  perpWallDist = (dist[1].x - dist[0].x);
+      else          
+		  perpWallDist = (dist[1].y - dist[0].y);
 
-		//what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
-
-		int hit = 0; //was there a wall hit?
-		int side; //was a NS or a EW wall hit?
-		//calculate step and initial sideDist
-		if(rayDir.x < 0)
-		{
-			stepX = -1;
-			dist[1].x = (pos.x - mapX) * dist[0].x;
-		}
-		else
-		{
-			stepX = 1;
-			dist[1].x = (mapX + 1.0 - pos.x) * dist[0].x;
-		}
-		if(rayDir.y < 0)
-		{
-			stepY = -1;
-			dist[1].y = (pos.y - mapY) * dist[0].y;
-		}
-		else
-		{
-			stepY = 1;
-			dist[1].y = (mapY + 1.0 - pos.y) * dist[0].y;
-		}
-		//perform DDA
-		while(hit == 0)
-		{
-			//jump to next map square, either in x-direction, or in y-direction
-			if(dist[1].x < dist[1].y)
-			{
-				dist[1].x += dist[0].x;
-				mapX += stepX;
-				side = 0;
-			}
-			else
-			{ 
-				dist[1].y += dist[0].y;
-				mapY += stepY;
-				side = 1;
-			}
-			if(prog->map[mapY][mapX] ==  '1') 
-				hit = 1;
-		}
-		if(side == 0) 
-			perpWallDist = (dist[1].x - dist[0].x);
-		else          
-			perpWallDist = (dist[1].y - dist[0].y);
-
-		int lineHeight = (int)(HEIGHT / perpWallDist);
-		int drawStart = -lineHeight / 2 + HEIGHT / 2;
-		if(drawStart < 0) 
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + HEIGHT / 2;
+      int lineHeight = (int)(HEIGHT / perpWallDist);
+      int drawStart = -lineHeight / 2 + HEIGHT / 2;
+      if(drawStart < 0) 
+		  drawStart = 0;
+      int drawEnd = lineHeight / 2 + HEIGHT / 2;
 		if(drawEnd >= HEIGHT) 
 			drawEnd = HEIGHT - 1;
-		int color = 0;
 		if(prog->map[mapY][mapX] == '1')
-			color = WALL;
-		if (side == 1)
-			color = WALL_2;
 		pi.x = po.x = x;
 		pi.y = drawStart;
 		po.y = drawEnd;
-		plot_line(pi, po, prog->img, color);
+		int texNum = 0;
+		if (side == 0)
+			texNum = 1;
+		double wallX; //where exactly the wall was hit
+		if (side == 0)
+			wallX = pos.y + perpWallDist * rayDir.y;
+		else
+			wallX = pos.x + perpWallDist * rayDir.x;
+		wallX -= floor((wallX));
+		prog->texX = (int)(wallX * (double)prog->tex[texNum].w);
+		if(side == 0 && rayDir.x > 0)
+			prog->texX = prog->tex[texNum].w - prog->texX - 1;
+		if(side == 1 && rayDir.y < 0)
+			prog->texX = prog->tex[texNum].w - prog->texX - 1;
+		double step = 1.0 * prog->tex[texNum].h / lineHeight;
+		double texPos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
+		double y = drawStart;
+		while (y < drawEnd)
+      	{
+			prog->texY= (int)texPos & (prog->tex[texNum].h - 1);
+			texPos += step;
+			int color = get_pixel_color(&prog->tex[texNum].img, prog->texX, prog->texY);
+			if(side == 1)
+				color = (color >> 1) & 8355711;
+			my_mlx_pixel_put(&(prog->img), x, y, color);
+			y++;
+      	}
+		ft_rotate(prog);
+		ft_move(prog);
 	}
 	mlx_put_image_to_window(prog->mlx, prog->win, prog->img.img, 0, 0);
-	ft_rotate(prog);
-	ft_move(prog);
 	return (1);
 }
