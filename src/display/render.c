@@ -10,6 +10,7 @@ double	ft_abs(double num)
 		return num;
 	return num*-1;
 }
+
 void ft_rotate(t_cub *prog)
 {
 	double	oldDir_x;
@@ -38,22 +39,24 @@ void ft_rotate(t_cub *prog)
 void ft_move(t_cub *prog)
 {
 	t_point pos;
+	double s;
 
 	pos.x = prog->pos.x;
 	pos.y = prog->pos.y;
+	s = 0.05;
 	if (prog->move == 2)
 	{
-		if (prog->map[(int)pos.y][(int)(pos.x + prog->dir.x * 0.05)] == '0')
-			prog->pos.x += prog->dir.x * 0.05;
-		if (prog->map[(int)(pos.y + prog->dir.y * 0.05)][(int)pos.x] == '0')
-			prog->pos.y += prog->dir.y * 0.05;
+		if (prog->map[(int)pos.y][(int)(pos.x + prog->dir.x *s)] == '0')
+			prog->pos.x += prog->dir.x * s;
+		if (prog->map[(int)(pos.y + prog->dir.y * s)][(int)pos.x] == '0')
+			prog->pos.y += prog->dir.y * s;
 	}		
 	if (prog->move == 3)
 	{
-		if (prog->map[(int)pos.y][(int)(pos.x - prog->dir.x * 0.05)] == '0')
-			prog->pos.x -= prog->dir.x * 0.05;
-		if (prog->map[(int)(pos.y - prog->dir.y * 0.05)][(int)pos.x] == '0')
-			prog->pos.y -= prog->dir.y * 0.05;
+		if (prog->map[(int)pos.y][(int)(pos.x - prog->dir.x * s)] == '0')
+			prog->pos.x -= prog->dir.x * s;
+		if (prog->map[(int)(pos.y - prog->dir.y * s)][(int)pos.x] == '0')
+			prog->pos.y -= prog->dir.y * s;
 	}	
 }
 
@@ -89,11 +92,8 @@ void ft_start(t_cub *prog)
       dist[0].x= (rayDir.x == 0) ? 1e30 : ft_abs(1 / rayDir.x);
       dist[0].y= (rayDir.y == 0) ? 1e30 : ft_abs(1 / rayDir.y);
 
-
-      //what direction to step in x or y-direction (either +1 or -1)
       int stepX;
       int stepY;
-
       int hit = 0; //was there a wall hit?
       int side; //was a NS or a EW wall hit?
       //calculate step and initial sideDist
@@ -117,10 +117,8 @@ void ft_start(t_cub *prog)
         stepY = 1;
         dist[1].y = (mapY + 1.0 - pos.y) * dist[0].y;
       }
-      //perform DDA
       while(hit == 0)
       {
-        //jump to next map square, either in x-direction, or in y-direction
         if(dist[1].x < dist[1].y)
         {
           dist[1].x += dist[0].x;
@@ -132,9 +130,6 @@ void ft_start(t_cub *prog)
           mapY += stepY;
           side = 1;
         }
-        //Check if ray has hit a wall
-		//printf("MAPX: %d, MAPY: %d\n", mapX, mapY);
-		//printf("(X, Y): %c\n", prog->map[mapY][mapX]);
         if(prog->map[mapY][mapX] ==  '1') 
 			hit = 1;
       }
@@ -148,21 +143,44 @@ void ft_start(t_cub *prog)
       if(drawStart < 0) 
 		  drawStart = 0;
       int drawEnd = lineHeight / 2 + H / 2;
-      if(drawEnd >= H) 
-		  drawEnd = H - 1;
-	  int color = 0;
+		if(drawEnd >= H) 
+			drawEnd = H - 1;
 		if(prog->map[mapY][mapX] == '1')
-			color = WALL;
-		if (side == 1)
-			color = WALL_2;
 		pi.x = po.x = x;
 		pi.y = drawStart;
 		po.y = drawEnd;
-		plot_line(pi, po, prog->img, color);
-  	mapX = (int) pos.x;
-  	mapY = (int) pos.y;
+		int texNum = 0;
+		if (side == 0)
+			texNum = 1;
+		double wallX; //where exactly the wall was hit
+		if (side == 0)
+			wallX = pos.y + perpWallDist * rayDir.y;
+		else
+			wallX = pos.x + perpWallDist * rayDir.x;
+		wallX -= floor((wallX));
+		prog->texX = (int)(wallX * (double)prog->tex[texNum].w);
+		if(side == 0 && rayDir.x > 0)
+			prog->texX = prog->tex[texNum].w - prog->texX - 1;
+		if(side == 1 && rayDir.y < 0)
+			prog->texX = prog->tex[texNum].w - prog->texX - 1;
+		double step = 1.0 * prog->tex[texNum].h / lineHeight;
+		double texPos = (drawStart - H / 2 + lineHeight / 2) * step;
+		double y = drawStart;
+		while (y < drawEnd)
+      	{
+			prog->texY= (int)texPos & (prog->tex[texNum].h - 1);
+			texPos += step;
+			int color = get_pixel_color(&prog->tex[texNum].img, prog->texX, prog->texY);
+			if(side == 1)
+				color = (color >> 1) & 8355711;
+			my_mlx_pixel_put(&(prog->img), x, y, color);
+			y++;
+      	}
+		//plot_line(pi, po, prog->img, color);
+ 		mapX = (int) pos.x;
+ 		mapY = (int) pos.y;
 	//printf("mapX: %d, mapY: %d\n", mapX, mapY);
 	//printf("START mapX: %d, mapY: %d Dir : %c\n", mapX, mapY, prog->map[mapX][mapY]);
-	mlx_put_image_to_window(prog->mlx, prog->win, prog->img.img, 0, 0);
 	}
+	mlx_put_image_to_window(prog->mlx, prog->win, prog->img.img, 0, 0);
 }

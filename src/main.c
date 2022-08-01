@@ -42,6 +42,7 @@ int	ft_hooks(int keycode, t_cub *vars)
 		vars->move = 3;
 		ft_move(vars);
 	}
+
 	ft_start(vars);
 	return (0);
 }
@@ -69,10 +70,6 @@ int	main(int argc, char **argv)
 		return (2);
 	while (prog.map[i])
 		ft_printf("|%s|\n", prog.map[i++]);
-	ft_printf("%d\n", prog.map_w);
-	ft_printf("%d\n", prog.map_h);
-	printf("%f\n",prog.pos.x);
-	printf("%f\n",prog.pos.y);
 	prog.mlx = mlx_init();
 	prog.win = mlx_new_window(prog.mlx, W, H, "cub3d");
 	mlx_hook(prog.win, 2, 1L << 0, ft_hooks, &prog);
@@ -80,6 +77,7 @@ int	main(int argc, char **argv)
 	prog.img.addr = mlx_get_data_addr(prog.img.img, &(prog.img.bits_per_pixel),
 			&(prog.img.line_length), &(prog.img.endian));
 	initialize_pos(&prog);
+	init_textures(&prog);
 	ft_start(&prog);
 	mlx_loop(prog.mlx);
 	return (0);

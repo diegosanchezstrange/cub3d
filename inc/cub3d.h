@@ -15,9 +15,12 @@ typedef struct s_data{
 typedef struct s_point{
 	double	x;
 	double	y;
-	double	mod;
-	double	angle;
 }				t_point;
+typedef struct s_text{
+	int	h;
+	int w;
+	t_data img;
+}				t_text;
 typedef struct	s_cub
 {
 	void	*mlx;
@@ -29,11 +32,14 @@ typedef struct	s_cub
 	char	*EA_path;
 	int		F_color[3];
 	int		C_color[3];
+	int texY;
+	int texX;
 	char	**map;
 	char	starting_way;
 	t_point	pos;
 	t_point	dir;
 	t_point	plane;
+	t_text tex[4]; // same order as the one above
 	size_t	map_w;
 	size_t	map_h;
 	int		move; // 0 right rotation, 1 left rotation
@@ -53,9 +59,13 @@ void	ft_resize_map(t_cub *cub);
 // parse/parse.c
 int		ft_parse_file(char *filename, t_cub *cub);
 void ft_start(t_cub *prog);
-void	plot_line(t_point p1, t_point p2, t_data img, int color);
+//void	plot_line(t_point p1, t_point p2, t_data img, int color);
 double	ft_abs(double num);
-
+// display plot
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int	get_pixel_color(t_data *data, int x, int y);
+// display text
+void init_textures(t_cub *prog);
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
 # define W 640
