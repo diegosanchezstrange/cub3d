@@ -32,8 +32,11 @@ typedef struct	s_cub
 	char	**map;
 	char	starting_way;
 	t_point	pos;
+	t_point	dir;
+	t_point	plane;
 	size_t	map_w;
 	size_t	map_h;
+	int		move; // 0 right rotation, 1 left rotation
 }				t_cub;
 
 //	utils/splits.c
@@ -43,10 +46,13 @@ void	ft_free_split(char **split);
 int		is_valid_param(t_cub *cub, char *line, int *num);
 // parse/parse_map.c
 int		ft_check_closed(t_cub *cub);
+void initialize_pos(t_cub *prog);
+void ft_move(t_cub *prog);
+void ft_rotate(t_cub *prog);
 void	ft_resize_map(t_cub *cub);
 // parse/parse.c
 int		ft_parse_file(char *filename, t_cub *cub);
-void ft_start(t_cub prog);
+void ft_start(t_cub *prog);
 void	plot_line(t_point p1, t_point p2, t_data img, int color);
 double	ft_abs(double num);
 

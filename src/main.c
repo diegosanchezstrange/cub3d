@@ -17,12 +17,32 @@ int	ft_hooks(int keycode, t_cub *vars)
 {
 	if (keycode == KEY_ESC)
 	{
-		//ft_free_all(vars);
 		mlx_destroy_window(vars->mlx, vars->win);
-		//free(vars.mlx);
+		free(vars->mlx);
 		exit(0);
 		return (1);
 	}
+	if (keycode == 124)
+	{	
+		vars->move = 0;
+		ft_rotate(vars);
+	}
+	if (keycode == 123)
+	{
+		vars->move = 1;
+		ft_rotate(vars);
+	}
+	if (keycode == 126)
+	{
+		vars->move = 2;
+		ft_move(vars);
+	}
+	if (keycode == 125)
+	{
+		vars->move = 3;
+		ft_move(vars);
+	}
+	ft_start(vars);
 	return (0);
 }
 
@@ -59,7 +79,8 @@ int	main(int argc, char **argv)
 	prog.img.img = mlx_new_image(prog.mlx, W, H);
 	prog.img.addr = mlx_get_data_addr(prog.img.img, &(prog.img.bits_per_pixel),
 			&(prog.img.line_length), &(prog.img.endian));
-	ft_start(prog);
+	initialize_pos(&prog);
+	ft_start(&prog);
 	mlx_loop(prog.mlx);
 	return (0);
 }
