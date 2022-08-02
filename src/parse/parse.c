@@ -69,6 +69,11 @@ int	ft_parse_line(char *line, t_cub *cub, int *num)
 {
 	int	ret;
 
+	if (ft_strlen(line) <= 1)
+	{
+		free(line);
+		return (*num != -1);
+	}
 	if (*num < 6 && *num != -1)
 		ret = is_valid_param(cub, line, num);
 	else
@@ -94,16 +99,15 @@ int	ft_parse_file(char *filename, t_cub *cub)
 	num = 0;
 	while (line)
 	{
-		if (ft_strlen(line) > 1)
+		if (!ft_parse_line(line, cub, &num))
 		{
-			if (!ft_parse_line(line, cub, &num))
-				return (0);
-		}
-		else if (num == -1)
+			free(line);
 			return (0);
+		}
 		line = get_next_line(fd);
 	}
 	close(fd);
+	free(line);
 	ft_resize_map(cub);
 	return (ft_check_closed(cub));
 }

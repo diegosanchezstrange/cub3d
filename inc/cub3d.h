@@ -42,6 +42,7 @@ typedef struct	s_cub
 //	utils/frees.c
 size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
+void	ft_free_cub(t_cub *cub);
 void	ft_free_all(t_cub *cub);
 
 // parse/utils.c

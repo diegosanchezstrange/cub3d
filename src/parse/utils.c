@@ -26,7 +26,10 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 	path = ft_strdup(split[1]);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
+	{
+		free(path);
 		return (0);
+	}
 	close(fd);
 	if (!ft_strncmp(split[0], "NO", 2))
 		cub->NO_path = path;
@@ -36,7 +39,6 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 		cub->WE_path = path;
 	else if (!ft_strncmp(split[0], "EA", 2))
 		cub->EA_path = path;
-	ft_free_split(split);
 	*num += 1;
 	return (1);
 }
@@ -68,28 +70,29 @@ int	check_color_code(t_cub *cub, char **split, int *num)
 			cub->C_color[i] = n;
 		i++;
 	}
+	ft_free_split(colors);
 	*num += 1;
 	return (1);
 }
 
 int	is_valid_param(t_cub *cub, char *line, int *num)
 {
-	int		n;
+	int		r;
 	char	*first;
 	size_t	l;
 	char	**split;
 
-	n = 0;
 	split = ft_split(line, ' ');
-	free(line);
-	while (split[n])
-		n++;
 	first = split[0];
 	l = ft_strlen(first);
+	r = 0;
 	if (!ft_strncmp(first, "NO", l) || !ft_strncmp(first, "SO", l)
 		|| !ft_strncmp(first, "WE", l) || !ft_strncmp(first, "EA", l))
-		return (check_direction_path(cub, split, num));
-	if (!ft_strncmp(first, "F", l) || !ft_strncmp(first, "C", l))
-		return (check_color_code(cub, split, num));
-	return (0);
+		r = check_direction_path(cub, split, num);
+	else if (!ft_strncmp(first, "F", l) || !ft_strncmp(first, "C", l))
+		r =  check_color_code(cub, split, num);
+	if (r != 0)
+		free(line);
+	ft_free_split(split);
+	return (r);
 }

@@ -32,9 +32,18 @@ void	ft_free_split(char **split)
 	free(split);
 }
 
+void	ft_free_cub(t_cub *cub)
+{
+	ft_free_split(cub->map);
+	free(cub->NO_path);
+	free(cub->SO_path);
+	free(cub->WE_path);
+	free(cub->EA_path);
+}
+
 void ft_free_all(t_cub *cub)
 {
-	ft_free_split(cub->map);	
+	ft_free_cub(cub);
 	mlx_destroy_window(cub->mlx, cub->win);
 	mlx_destroy_image(cub->mlx, cub->img.img);
 }
