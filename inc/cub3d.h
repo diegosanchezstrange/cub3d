@@ -15,28 +15,71 @@ typedef struct s_data{
 	int		line_length;
 	int		endian;
 }				t_data;
+
 typedef struct s_point{
 	double	x;
 	double	y;
-	double	mod;
-	double	angle;
 }				t_point;
+
+typedef struct s_keys{
+	int	W;
+	int	A;
+	int	S;
+	int	D;
+	int	RIGHT;
+	int	LEFT;
+}				t_keys;
+
+typedef struct s_text{
+	int	h;
+	int w;
+	t_data img;
+}				t_text;
+
+typedef	struct	s_render
+{
+	t_point	pos;
+	t_point	dir;
+	t_point	plane;
+	t_point	rayDir;
+	t_point	sideDist;
+	t_point	deltaDist;
+	int		stepX;
+	int		stepY;
+	int		mapX;
+	int		mapY;
+	int		side;
+	double	perpWallDist;
+}				t_render;
+
 typedef struct	s_cub
 {
+	//mlx
 	void	*mlx;
 	void	*win;
 	t_data	img;
+	//textures
 	char	*NO_path;
 	char	*SO_path;
 	char	*WE_path;
 	char	*EA_path;
+	//colors
 	int		F_color[3];
 	int		C_color[3];
+	//tex rendering
+	int 	texY;
+	int 	texX;
 	char	**map;
 	char	starting_way;
 	t_point	pos;
+	t_point	dir;
+	t_point	plane;
+	t_render	*params;
+	t_text	tex[4]; // same order as the one above
 	size_t	map_w;
 	size_t	map_h;
+	int		move; // 0 right rotation, 1 left rotation
+	t_keys	keys;
 }				t_cub;
 
 //	utils/frees.c
@@ -50,17 +93,23 @@ int		is_valid_param(t_cub *cub, char *line, int *num);
 
 // parse/parse_map.c
 int		ft_check_closed(t_cub *cub);
+void 	ft_move(t_cub *prog, t_render *params);
+void 	ft_rotate(t_cub *prog, t_render *params);
 void	ft_resize_map(t_cub *cub);
 // parse/parse.c
 int		ft_parse_file(char *filename, t_cub *cub);
-void ft_start(t_cub prog);
+int		ft_start(t_cub *prog);
 void	plot_line(t_point p1, t_point p2, t_data img, int color);
 double	ft_abs(double num);
-
+// display plot
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int	get_pixel_color(t_data *data, int x, int y);
+// display text
+void init_textures(t_cub *prog);
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
-# define W 640
-# define H 480
+# define WIDTH 640
+# define HEIGHT 480
 
 # define X_OFFSET 20
 # define Y_OFFSET 20

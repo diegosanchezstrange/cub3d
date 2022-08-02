@@ -3,6 +3,8 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
 double	ft_abs(double num)
 {
 	if (num > 0)
@@ -10,253 +12,179 @@ double	ft_abs(double num)
 	return num*-1;
 }
 
-
-void ft_start(t_cub prog)
+void ft_rotate(t_cub *prog, t_render *params)
 {
-	double posX = prog.pos.x + 0.5f , posY = prog.pos.y + 0.5f;  //x and y start position
-	double dirX = -1, dirY = 0; //initial direction vector
-	double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
-	t_point pi, po;
+	double	oldDir_x;
+	double	oldPlane_x;
+	double 	s;
 
-
-	int mapX = (int) posX;
-	int mapY = (int) posY;
-
-
-    for(int x = 0; x < W; x++)
-    {
-      //calculate ray position and direction
-      double cameraX = (2 * x) / (double)W - 1; //x-coordinate in camera space
-      double rayDirX = dirX + planeX * cameraX;
-      double rayDirY = dirY + planeY * cameraX;
-
-	  printf("cameraX: %f\n", cameraX);
-	  printf("RayDirX: %f\n", rayDirX);
-	  printf("RayDirY: %f\n\n", rayDirY);
-
-      //which box of the map we're in
-      mapX = (int) posX;
-      mapY = (int) posY;
-
-      //length of ray from current position to next x or y-side
-      double sideDistX;
-      double sideDistY;
-
-      //length of ray from one x or y-side to next x or y-side
-      //these are derived as:
-      //deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
-      //deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
-      //which can be simplified to abs(|rayDir| / rayDirX) and abs(|rayDir| / rayDirY)
-      //where |rayDir| is the length of the vector (rayDirX, rayDirY). Its length,
-      //unlike (dirX, dirY) is not 1, however this does not matter, only the
-      //ratio between deltaDistX and deltaDistY matters, due to the way the DDA
-      //stepping further below works. So the values can be computed as below.
-      // Division through zero is prevented, even though technically that's not
-      // needed in C++ with IEEE 754 floating point values.
-      double deltaDistX = (rayDirX == 0) ? 1e30 : ft_abs(1 / rayDirX);
-      double deltaDistY = (rayDirY == 0) ? 1e30 : ft_abs(1 / rayDirY);
-
-	  printf("deltaX : %f \n", deltaDistX);
-	  printf("deltaY : %f \n", deltaDistY);
-
-      double perpWallDist;
-
-      //what direction to step in x or y-direction (either +1 or -1)
-      int stepX;
-      int stepY;
-
-      int hit = 0; //was there a wall hit?
-      int side; //was a NS or a EW wall hit?
-      //calculate step and initial sideDist
-      if(rayDirX < 0)
-      {
-        stepX = -1;
-        sideDistX = (posX - mapX) * deltaDistX;
-      }
-      else
-      {
-        stepX = 1;
-        sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-      }
-      if(rayDirY < 0)
-      {
-        stepY = -1;
-        sideDistY = (posY - mapY) * deltaDistY;
-      }
-      else
-      {
-        stepY = 1;
-        sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-      }
-	  printf("sideDistX : %f \n", sideDistX);
-	  printf("sideDistY : %f \n", sideDistY);
-      //perform DDA
-      while(hit == 0)
-      {
-        //jump to next map square, either in x-direction, or in y-direction
-        if(sideDistX < sideDistY)
-        {
-          sideDistX += deltaDistX;
-          mapX += stepX;
-          side = 0;
-        }
-        else
-        { sideDistY += deltaDistY;
-          mapY += stepY;
-          side = 1;
-        }
-        //Check if ray has hit a wall
-		printf("MAPX: %d, MAPY: %d\n", mapX, mapY);
-		printf("(X, Y): %c\n", prog.map[mapY][mapX]);
-        if(prog.map[mapY][mapX] ==  '1') 
-			hit = 1;
-      }
-	  printf("sideDistX : %f \n", sideDistX);
-	  printf("sideDistY : %f \n", sideDistY);
-	  printf("deltaDistX : %f \n", deltaDistX);
-	  printf("deltaDistY : %f \n", deltaDistY);
-      //Calculate distance projected on camera direction. This is the shortest distance from the point where the wall is
-      //hit to the camera plane. Euclidean to center camera point would give fisheye effect!
-      //This can be computed as (mapX - posX + (1 - stepX) / 2) / rayDirX for side == 0, or same formula with Y
-      //for size == 1, but can be simplified to the code below thanks to how sideDist and deltaDist are computed:
-      //because they were left scaled to |rayDir|. sideDist is the entire length of the ray above after the multiple
-      //steps, but we subtract deltaDist once because one step more into the wall was taken above.
-      if(side == 0) 
-		  perpWallDist = (sideDistX - deltaDistX);
-      else          
-		  perpWallDist = (sideDistY - deltaDistY);
-
-	  printf("Wall Dist: %f, side %d\n", perpWallDist, side);
-      //Calculate height of line to draw on screen
-      int lineHeight = (int)(H / perpWallDist);
-	  printf("Line H: %d\n", lineHeight);
-
-      //calculate lowest and highest pixel to fill in current stripe
-      int drawStart = -lineHeight / 2 + H / 2;
-      if(drawStart < 0) 
-		  drawStart = 0;
-      int drawEnd = lineHeight / 2 + H / 2;
-      if(drawEnd >= H) 
-		  drawEnd = H - 1;
-	  int color;
-	  color = 0;
-		if(prog.map[mapY][mapX] == '1')
-			color = WALL;
-		if (side == 1)
-			color = WALL_2;
-
-		pi.x = po.x = x;
-		pi.y = drawStart;
-		po.y = drawEnd;
-		plot_line(pi, po, prog.img, color);
-	  printf("x: %d\n", x);
-	  printf("drawStart: %d\n", drawStart);
-	  printf("drawEnd: %d\n", drawEnd);
+	oldDir_x = params->dir.x;
+	oldPlane_x = params->plane.x;
+	s = 0.00005;
+	if (prog->keys.LEFT == 1)
+	{
+		params->dir.x = (params->dir.x * cos(-s)) - (params->dir.y * sin(-s));
+		params->dir.y = (oldDir_x * sin(-s)) + (params->dir.y * cos(-s));
+		params->plane.x = (params->plane.x * cos(-s)) - (params->plane.y * sin(-s));
+		params->plane.y = (oldPlane_x * sin(-s)) + (params->plane.y * cos(-s));
 	}
-  mapX = (int) posX;
-  mapY = (int) posY;
-	printf("mapX: %d, mapY: %d\n", mapX, mapY);
-	printf("START mapX: %d, mapY: %d Dir : %c\n", mapX, mapY, prog.map[mapX][mapY]);
-	mlx_put_image_to_window(prog.mlx, prog.win, prog.img.img, 0, 0);
+	else if (prog->keys.RIGHT == 1)
+	{
+		params->dir.x = (params->dir.x * cos(s)) - (params->dir.y * sin(s));
+		params->dir.y = (oldDir_x * sin(s)) + (params->dir.y * cos(s));
+		params->plane.x = (params->plane.x * cos(s)) - (params->plane.y * sin(s));
+		params->plane.y = (oldPlane_x * sin(s)) + (params->plane.y * cos(s));
+	}	
 }
 
-/*void ft_start(t_cub prog)
+void ft_move(t_cub *prog, t_render *params)
 {
-	t_point plane;
-	t_point	dir;
-	t_point pi, po;
-	int		i, hit, stepx, stepy, side, map_x, map_y;
-	int color;
-	int line_h, draw_start, draw_end;
-	double	camera_x, perp_dist;
-	t_point dist[2]; // 0 is delta dist & 1 is side dist & 
-	t_point	ray;
+	t_point pos;
+	double s;
 
-	plane.x = 0;
-	plane.y = 0.66;
-	dir.x = 0;
-	dir.y = -1;
-	i = 0;
-	hit = 0;
-	printf("HOLA\n");
-	printf("%d\n", W);
-	while(i < (int)W)	
+	pos.x = prog->pos.x;
+	pos.y = prog->pos.y;
+	s = 0.00005;
+	if (prog->keys.W == 1)
 	{
-		map_x =(int)prog.pos.x;
-		map_y = (int)prog.pos.y;
-		camera_x = (2 * i)/ (double)W;
-		ray.x = dir.x  + plane.x * camera_x;
-		ray.y = dir.y  + plane.y * camera_x;
+		if (prog->map[(int)pos.y][(int)(pos.x + params->dir.x *s)] != '1')
+			prog->pos.x += params->dir.x * s;
+		if (prog->map[(int)(pos.y + params->dir.y * s)][(int)pos.x] != '1')
+			prog->pos.y += params->dir.y * s;
+	}		
+	else if (prog->keys.S == 1)
+	{
+		if (prog->map[(int)pos.y][(int)(pos.x - params->dir.x * s)] != '1')
+			prog->pos.x -= params->dir.x * s;
+		if (prog->map[(int)(pos.y - params->dir.y * s)][(int)pos.x] != '1')
+			prog->pos.y -= params->dir.y * s;
+	}	
+}
 
-		if (ray.x == 0)
-			dist[0].x = 1e-30;
-		else
-			dist[0].x = ft_abs(1/ray.x);
-		if (ray.y == 0)
-			dist[0].y = 1e-30;
-		else
-			dist[0].y = ft_abs(1/ray.y);
 
-		if (ray.x < 0)
-		{
-			stepx = -1;
-			dist[1].x = (prog.pos.x - map_x)*dist[0].x;
-		}
-		else
-		{
-			stepx = 1;
-			dist[1].x = (map_x + 1 - prog.pos.x)*dist[0].x;
-		}
-		if(ray.y < 0)
-		{
-			stepy = -1;
-			dist[1].y = (prog.pos.y - map_y)*dist[0].y;
-		}
-		else
-		{
-			stepy = 1;
-			dist[1].y = (map_y + 1 - prog.pos.y)*dist[0].y;
-		}
+void ft_loop_render(t_cub *prog, t_render *params, int x)
+{
+	//calculate ray position and direction
 
-		while (hit == 0)
-		{
-			if (dist[1].x < dist[1].y)
-			{
-				dist[1].x += dist[0].x;
-				map_x += stepx;
-				side = 0;
-			}
-			else
-			{
-				dist[1].y += dist[0].y;
-				map_y += stepy;
-				side = 1;
-			}
-			if (prog.map[map_x][map_y] == 1)
-				hit = 1;
-		}
-		if(side == 0)
-			perp_dist = dist[1].x - dist[0].x;
-		else
-			perp_dist = dist[1].y - dist[0].y;
-		line_h = (int)(H / perp_dist);
-		draw_start = (-1 * line_h) / 2 + H / 2;
-		if (draw_start < 0)
-			draw_start = 0;
-		draw_end = line_h / 2 + H / 2 ;
-		if (draw_end >= H)
-			draw_end = H -1;
-		//Wall color
-		if(prog.map[map_x][map_y] == 1)
-			color = WALL;
-		if (side == 1)
-			color = WALL_2;
-		printf("TRAZA2\n");
-		pi.x = po.x = i;
-		pi.y = draw_start;
-		po.y = draw_end;
-		plot_line(pi, po, prog.img, color);
-		i++;
+	//t_point 	dist[2]; // 0 is delta 1 is side
+
+
+	params->deltaDist.x = (params->rayDir.x == 0) ? 1e30 : ft_abs(1 / params->rayDir.x);
+	params->deltaDist.y = (params->rayDir.y == 0) ? 1e30 : ft_abs(1 / params->rayDir.y);
+
+	//int side; //was a NS or a EW wall hit?
+	//calculate step and initial sideDist
+	if(params->rayDir.x < 0)
+	{
+		params->stepX = -1;
+		params->sideDist.x = (params->pos.x - params->mapX) * params->deltaDist.x;
 	}
-	mlx_put_image_to_window(prog.mlx, prog.win, prog.img.img, 0, 0);
-}*/
+	else
+	{
+		params->stepX = 1;
+		params->sideDist.x = (params->mapX + 1.0 - params->pos.x) * params->deltaDist.x;
+	}
+	if(params->rayDir.y < 0)
+	{
+		params->stepY = -1;
+		params->sideDist.y = (params->pos.y - params->mapY) * params->deltaDist.y;
+	}
+	else
+	{
+		params->stepY = 1;
+		params->sideDist.y = (params->mapY + 1.0 - params->pos.y) * params->deltaDist.y;
+	}
+
+	int hit = 0;
+
+	while(hit == 0)
+	{
+		if(params->sideDist.x < params->sideDist.y)
+		{
+			params->sideDist.x += params->deltaDist.x;
+			params->mapX += params->stepX;
+			params->side = 0;
+		}
+		else
+		{ 
+			params->sideDist.y += params->deltaDist.y;
+			params->mapY += params->stepY;
+			params->side = 1;
+		}
+		if(prog->map[params->mapY][params->mapX] ==  '1') 
+			hit = 1;
+	}
+	if(params->side == 0) 
+	  params->perpWallDist = (params->sideDist.x - params->deltaDist.x);
+	else          
+	  params->perpWallDist = (params->sideDist.y - params->deltaDist.y);
+
+	int lineHeight = (int)(HEIGHT / params->perpWallDist);
+	int drawStart = -lineHeight / 2 + HEIGHT / 2;
+	if(drawStart < 0) 
+	  drawStart = 0;
+	int drawEnd = lineHeight / 2 + HEIGHT / 2;
+	if(drawEnd >= HEIGHT) 
+		drawEnd = HEIGHT - 1;
+	int texNum = 0;
+	if (params->side == 0)
+		texNum = 1;
+
+	(void)texNum;
+
+	double wallX; //where exactly the wall was hit
+	if (params->side == 0)
+		wallX = params->pos.y + params->perpWallDist * params->rayDir.y;
+	else
+		wallX = params->pos.x + params->perpWallDist * params->rayDir.x;
+	wallX -= floor((wallX));
+	prog->texX = (int)(wallX * (double)prog->tex[texNum].w);
+	if(params->side == 0 && params->rayDir.x > 0)
+		prog->texX = prog->tex[texNum].w - prog->texX - 1;
+	if(params->side == 1 && params->rayDir.y < 0)
+		prog->texX = prog->tex[texNum].w - prog->texX - 1;
+	double step = 1.0 * prog->tex[texNum].h / lineHeight;
+	double texPos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
+	double y = drawStart;
+	while (y < drawEnd)
+	{
+		prog->texY = (int)texPos & (prog->tex[texNum].h - 1);
+		texPos += step;
+		int color = get_pixel_color(&prog->tex[texNum].img, prog->texX, prog->texY);
+		if(params->side == 1)
+			color = (color >> 1) & 8355711;
+		my_mlx_pixel_put(&(prog->img), x, y, color);
+		y++;
+	}
+	ft_rotate(prog, params);
+	ft_move(prog, params);
+}
+
+void ft_init_render(t_cub *prog, t_render *params, int x)
+{
+	double cameraX; //x-coordinate in camera space
+
+	cameraX = 2 * x / (double)WIDTH - 1;
+	params->pos.x = prog->pos.x + 0.5;
+	params->pos.y = prog->pos.y + 0.5;  //x and y start position
+	params->rayDir.x = params->dir.x + params->plane.x * cameraX;
+	params->rayDir.y = params->dir.y + params->plane.y * cameraX;
+	params->mapX = (int) params->pos.x;
+	params->mapY = (int) params->pos.y;
+}
+
+int ft_start(t_cub *prog)
+{
+	t_render	*params;
+
+	params = prog->params;
+	ft_bzero(prog->img.addr, WIDTH * HEIGHT * (prog->img.bits_per_pixel / 8));
+	for(int x = 0; x < WIDTH; x++)
+	{
+		ft_init_render(prog, params, x);
+		ft_loop_render(prog, params, x);
+	}
+	mlx_put_image_to_window(prog->mlx, prog->win, prog->img.img, 0, 0);
+	return (1);
+}
+
