@@ -61,19 +61,8 @@ void ft_move(t_cub *prog, t_render *params)
 	}	
 }
 
-
-void ft_loop_render(t_cub *prog, t_render *params, int x)
+void	ft_side_dist(t_render *params)
 {
-	//calculate ray position and direction
-
-	//t_point 	dist[2]; // 0 is delta 1 is side
-
-
-	params->deltaDist.x = (params->rayDir.x == 0) ? 1e30 : ft_abs(1 / params->rayDir.x);
-	params->deltaDist.y = (params->rayDir.y == 0) ? 1e30 : ft_abs(1 / params->rayDir.y);
-
-	//int side; //was a NS or a EW wall hit?
-	//calculate step and initial sideDist
 	if(params->rayDir.x < 0)
 	{
 		params->stepX = -1;
@@ -94,7 +83,10 @@ void ft_loop_render(t_cub *prog, t_render *params, int x)
 		params->stepY = 1;
 		params->sideDist.y = (params->mapY + 1.0 - params->pos.y) * params->deltaDist.y;
 	}
+}
 
+void	ft_dda(t_cub *prog, t_render *params)
+{
 	int hit = 0;
 
 	while(hit == 0)
@@ -114,35 +106,60 @@ void ft_loop_render(t_cub *prog, t_render *params, int x)
 		if(prog->map[params->mapY][params->mapX] ==  '1') 
 			hit = 1;
 	}
+}
+
+int	ft_draw_start_end(t_render *params, int *drawStart, int *drawEnd)
+{
+	int lineHeight;
+	//int drawStart;
+	//int drawEnd;
+
 	if(params->side == 0) 
 	  params->perpWallDist = (params->sideDist.x - params->deltaDist.x);
 	else          
 	  params->perpWallDist = (params->sideDist.y - params->deltaDist.y);
+	lineHeight = (int)(HEIGHT / params->perpWallDist);
+	*drawStart = -lineHeight / 2 + HEIGHT / 2;
+	if(*drawStart < 0) 
+	  *drawStart = 0;
+	*drawEnd = lineHeight / 2 + HEIGHT / 2;
+	if(*drawEnd >= HEIGHT) 
+		*drawEnd = HEIGHT - 1;
+	return (lineHeight);
+}
 
-	int lineHeight = (int)(HEIGHT / params->perpWallDist);
-	int drawStart = -lineHeight / 2 + HEIGHT / 2;
-	if(drawStart < 0) 
-	  drawStart = 0;
-	int drawEnd = lineHeight / 2 + HEIGHT / 2;
-	if(drawEnd >= HEIGHT) 
-		drawEnd = HEIGHT - 1;
-	int texNum = 0;
+int	ft_texnum(t_render *params)
+{
 	if (params->side == 0)
 	{
 		if (params->rayDir.x > 0)
-			texNum = EA;
+			return (EA);
 		else
-			texNum = WE;
+			return (WE);
 	}
 	else
 	{
 		if (params->rayDir.y > 0)
-			texNum = NO;
+			return (NO);
 		else
-			texNum = SO;
+			return (SO);
 	}
-	(void)texNum;
+}
+
+void ft_loop_render(t_cub *prog, t_render *params, int x)
+{
+	int	drawStart;
+	int	drawEnd;
+	int lineHeight;
+	int texNum = 0;
+
+	ft_side_dist(params);
+	ft_dda(prog, params);
+	lineHeight = ft_draw_start_end(params, &drawStart, &drawEnd);
+	texNum = ft_texnum(params);
+
 	double wallX; //where exactly the wall was hit
+
 	if (params->side == 0)
 		wallX = params->pos.y + params->perpWallDist * params->rayDir.y;
 	else
@@ -155,19 +172,20 @@ void ft_loop_render(t_cub *prog, t_render *params, int x)
 		prog->texX = prog->tex[texNum].w - prog->texX - 1;
 	double step = 1.0 * prog->tex[texNum].h / lineHeight;
 	double texPos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
-	double y = drawStart;
+
 	vertical_line(x, 0, drawStart, *prog);
 	vertical_line(x, drawEnd, HEIGHT, *prog);
-	while (y < drawEnd)
+	while (drawStart < drawEnd)
 	{
 		prog->texY = (int)texPos & (prog->tex[texNum].h - 1);
 		texPos += step;
 		int color = get_pixel_color(&prog->tex[texNum].img, prog->texX, prog->texY);
 		if(params->side == 1)
 			color = (color >> 1) & 8355711;
-		my_mlx_pixel_put(&(prog->img), x, y, color);
-		y++;
+		my_mlx_pixel_put(&(prog->img), x, drawStart, color);
+		drawStart++;
 	}
+
 	ft_rotate(prog, params);
 	ft_move(prog, params);
 }
@@ -183,6 +201,14 @@ void ft_init_render(t_cub *prog, t_render *params, int x)
 	params->rayDir.y = params->dir.y + params->plane.y * cameraX;
 	params->mapX = (int) params->pos.x;
 	params->mapY = (int) params->pos.y;
+	if (params->rayDir.x == 0)
+		params->deltaDist.x = 1e30;
+	else
+		params->deltaDist.x = ft_abs(1 / params->rayDir.x);
+	if (params->rayDir.y == 0)
+		params->deltaDist.y = 1e30;
+	else
+		params->deltaDist.y = ft_abs(1 / params->rayDir.y);
 }
 
 int ft_start(t_cub *prog)
