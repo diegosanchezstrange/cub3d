@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/04 20:17:32 by mclerico          #+#    #+#             */
+/*   Updated: 2022/08/04 20:21:07 by mclerico         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <cub3d.h>
 #include <mlx.h>
 #include <limits.h>
@@ -5,11 +17,12 @@
 #include <stdio.h>
 #include <math.h>
 
-int load_textures(t_cub *prog, t_text *texture, char *path)
+int	load_textures(t_cub *prog, t_text *texture, char *path)
 {
-	if (!path || ft_strlen(path) == 0)	
+	if (!path || ft_strlen(path) == 0)
 		return (0);
-	texture->img.img = mlx_xpm_file_to_image(prog->mlx, path, &texture->w, &texture->h);
+	texture->img.img = mlx_xpm_file_to_image(prog->mlx,
+			path, &texture->w, &texture->h);
 	if (texture->img.img == NULL)
 		return (0);
 	texture->img.addr = mlx_get_data_addr(texture->img.img,
@@ -20,12 +33,12 @@ int load_textures(t_cub *prog, t_text *texture, char *path)
 	return (1);
 }
 
-void init_textures(t_cub *prog)
+void	init_textures(t_cub *prog)
 {
-	if (!load_textures(prog, &prog->tex[0], prog->NO_path) ||
-			!load_textures(prog, &prog->tex[1], prog->SO_path) ||
-			!load_textures(prog, &prog->tex[2], prog->WE_path) ||
-			!load_textures(prog, &prog->tex[3], prog->EA_path))
+	if (!load_textures(prog, &prog->tex[0], prog->NO_path)
+		|| !load_textures(prog, &prog->tex[1], prog->SO_path)
+		|| !load_textures(prog, &prog->tex[2], prog->WE_path)
+		|| !load_textures(prog, &prog->tex[3], prog->EA_path))
 	{
 		return ;
 	}
