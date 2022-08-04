@@ -104,6 +104,7 @@ double	ft_abs(double num);
 // display plot
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	get_pixel_color(t_data *data, int x, int y);
+void	vertical_line(double x, double yi, double yo, t_cub params);;
 // display text
 void init_textures(t_cub *prog);
 # define WALL 0xCCFFCC
