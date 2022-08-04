@@ -128,10 +128,20 @@ void ft_loop_render(t_cub *prog, t_render *params, int x)
 		drawEnd = HEIGHT - 1;
 	int texNum = 0;
 	if (params->side == 0)
-		texNum = 1;
-
+	{
+		if (params->rayDir.x > 0)
+			texNum = EA;
+		else
+			texNum = WE;
+	}
+	else
+	{
+		if (params->rayDir.y > 0)
+			texNum = NO;
+		else
+			texNum = SO;
+	}
 	(void)texNum;
-
 	double wallX; //where exactly the wall was hit
 	if (params->side == 0)
 		wallX = params->pos.y + params->perpWallDist * params->rayDir.y;

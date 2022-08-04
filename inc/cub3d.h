@@ -113,7 +113,10 @@ void init_textures(t_cub *prog);
 
 # define X_OFFSET 20
 # define Y_OFFSET 20
-
+# define NO 0
+# define SO 1
+# define WE 2
+# define EA 3
 # ifdef OSX
 #  define KEY_ESC 53
 #  define KEY_UP 126
