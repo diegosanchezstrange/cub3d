@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   plot.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/04 20:12:18 by mclerico          #+#    #+#             */
+/*   Updated: 2022/08/04 20:16:56 by mclerico         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <cub3d.h>
 #include <stdio.h>
-
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -16,10 +27,10 @@ int	get_pixel_color(t_data *data, int x, int y)
 {
 	char	*dst;
 	int		color;
-	
+
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	color = *(unsigned int *)dst;
-	return (color);	
+	return (color);
 }
 
 int	ft_bigger(double x, double y)
@@ -28,6 +39,7 @@ int	ft_bigger(double x, double y)
 		return (1);
 	return (-1);
 }
+
 int	get_fromrgb(int rgb[3])
 {
 	if (!rgb)
@@ -48,7 +60,7 @@ void	vertical_line(double x, double yi, double yo, t_cub params)
 	while (yi != yo)
 	{
 		my_mlx_pixel_put(&(params.img), x, yi, color);
-		yi += s;	
+		yi += s;
 	}
 }
 /*
