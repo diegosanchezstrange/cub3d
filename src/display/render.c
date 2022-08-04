@@ -108,23 +108,21 @@ void	ft_dda(t_cub *prog, t_render *params)
 	}
 }
 
-int	ft_draw_start_end(t_render *params, int *drawStart, int *drawEnd)
+int	ft_draw_start_end(t_render *params)
 {
 	int lineHeight;
-	//int drawStart;
-	//int drawEnd;
 
 	if(params->side == 0) 
 	  params->perpWallDist = (params->sideDist.x - params->deltaDist.x);
 	else          
 	  params->perpWallDist = (params->sideDist.y - params->deltaDist.y);
 	lineHeight = (int)(HEIGHT / params->perpWallDist);
-	*drawStart = -lineHeight / 2 + HEIGHT / 2;
-	if(*drawStart < 0) 
-	  *drawStart = 0;
-	*drawEnd = lineHeight / 2 + HEIGHT / 2;
-	if(*drawEnd >= HEIGHT) 
-		*drawEnd = HEIGHT - 1;
+	params->drawStart = -lineHeight / 2 + HEIGHT / 2;
+	if(params->drawStart < 0) 
+	  params->drawStart = 0;
+	params->drawEnd = lineHeight / 2 + HEIGHT / 2;
+	if(params->drawEnd >= HEIGHT) 
+		params->drawEnd = HEIGHT - 1;
 	return (lineHeight);
 }
 
@@ -146,46 +144,55 @@ int	ft_texnum(t_render *params)
 	}
 }
 
-void ft_loop_render(t_cub *prog, t_render *params, int x)
+double	ft_wallx(t_render *params)
 {
-	int	drawStart;
-	int	drawEnd;
-	int lineHeight;
-	int texNum = 0;
-
-	ft_side_dist(params);
-	ft_dda(prog, params);
-	lineHeight = ft_draw_start_end(params, &drawStart, &drawEnd);
-	texNum = ft_texnum(params);
-
-	double wallX; //where exactly the wall was hit
+	double	wallX;
 
 	if (params->side == 0)
 		wallX = params->pos.y + params->perpWallDist * params->rayDir.y;
 	else
 		wallX = params->pos.x + params->perpWallDist * params->rayDir.x;
 	wallX -= floor((wallX));
-	prog->texX = (int)(wallX * (double)prog->tex[texNum].w);
+	return (wallX);
+}
+
+void	ft_draw_lines(t_cub *prog, t_render *params, int lineHeight, int x)
+{
+	int		color;
+	double	step;
+	double	texPos;
+	int		texNum;
+
+	texNum = ft_texnum(params);
+	prog->texX = (int)(ft_wallx(params) * (double)prog->tex[texNum].w);
 	if(params->side == 0 && params->rayDir.x > 0)
 		prog->texX = prog->tex[texNum].w - prog->texX - 1;
 	if(params->side == 1 && params->rayDir.y < 0)
 		prog->texX = prog->tex[texNum].w - prog->texX - 1;
-	double step = 1.0 * prog->tex[texNum].h / lineHeight;
-	double texPos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
-
-	vertical_line(x, 0, drawStart, *prog);
-	vertical_line(x, drawEnd, HEIGHT, *prog);
-	while (drawStart < drawEnd)
+	step = 1.0 * prog->tex[texNum].h / lineHeight;
+	texPos = (params->drawStart - HEIGHT / 2 + lineHeight / 2) * step;
+	vertical_line(x, 0, params->drawStart, *prog);
+	vertical_line(x, params->drawEnd, HEIGHT, *prog);
+	while (params->drawStart < params->drawEnd)
 	{
 		prog->texY = (int)texPos & (prog->tex[texNum].h - 1);
 		texPos += step;
-		int color = get_pixel_color(&prog->tex[texNum].img, prog->texX, prog->texY);
+		color = get_pixel_color(&prog->tex[texNum].img, prog->texX, prog->texY);
 		if(params->side == 1)
 			color = (color >> 1) & 8355711;
-		my_mlx_pixel_put(&(prog->img), x, drawStart, color);
-		drawStart++;
+		my_mlx_pixel_put(&(prog->img), x, params->drawStart, color);
+		params->drawStart++;
 	}
+}
 
+void ft_loop_render(t_cub *prog, t_render *params, int x)
+{
+	int lineHeight;
+
+	ft_side_dist(params);
+	ft_dda(prog, params);
+	lineHeight = ft_draw_start_end(params);
+	ft_draw_lines(prog, params, lineHeight, x);
 	ft_rotate(prog, params);
 	ft_move(prog, params);
 }
