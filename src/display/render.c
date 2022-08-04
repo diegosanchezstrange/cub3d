@@ -173,6 +173,8 @@ void ft_loop_render(t_cub *prog, t_render *params, int x)
 	double step = 1.0 * prog->tex[texNum].h / lineHeight;
 	double texPos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
 
+	vertical_line(x, 0, drawStart, *prog);
+	vertical_line(x, drawEnd, HEIGHT, *prog);
 	while (drawStart < drawEnd)
 	{
 		prog->texY = (int)texPos & (prog->tex[texNum].h - 1);

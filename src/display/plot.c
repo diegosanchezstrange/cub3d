@@ -28,12 +28,29 @@ int	ft_bigger(double x, double y)
 		return (1);
 	return (-1);
 }
-/*
-void vertical_line(double x, double yi, double yo, int color)
+int	get_fromrgb(int rgb[3])
 {
-
+	if (!rgb)
+		return (0);
+	return (rgb[0] << 16 | rgb[1] << 8 | rgb[2]);
 }
-*/
+
+void	vertical_line(double x, double yi, double yo, t_cub params)
+{
+	int	s;
+	int	color;
+
+	s = ft_bigger(yi, yo);
+	if (yi == 0)
+		color = get_fromrgb(params.C_color);
+	else
+		color = get_fromrgb(params.F_color);
+	while (yi != yo)
+	{
+		my_mlx_pixel_put(&(params.img), x, yi, color);
+		yi += s;	
+	}
+}
 /*
 void	plot_line(t_point p1, t_point p2, t_data img, t_data tex)
 {
@@ -68,4 +85,5 @@ void	plot_line(t_point p1, t_point p2, t_data img, t_data tex)
 			p1.y += s.y;
 		}
 	}
-}*/
+}
+*/
