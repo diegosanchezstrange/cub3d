@@ -70,11 +70,8 @@ int	ft_parse_line(char *line, t_cub *cub, int *num)
 	int	ret;
 
 	if (ft_strlen(line) <= 1)
-	{
-		free(line);
-		return (*num != -1);
-	}
-	if (*num < 6 && *num != -1)
+		ret = *num != -1;
+	else if (*num < 6 && *num != -1)
 		ret = is_valid_param(cub, line, num);
 	else
 	{

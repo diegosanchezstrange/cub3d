@@ -85,7 +85,7 @@ void	ft_side_dist(t_render *params)
 	}
 }
 
-void	ft_dda(t_cub *prog, t_render *params)
+int	ft_dda(t_cub *prog, t_render *params)
 {
 	int hit = 0;
 
@@ -103,9 +103,15 @@ void	ft_dda(t_cub *prog, t_render *params)
 			params->mapY += params->stepY;
 			params->side = 1;
 		}
+		if (params->mapY < 0 || (size_t)params->mapY >= prog->map_h)
+			return (0);
+		if (params->mapX < 0 || (size_t)params->mapX >= prog->map_w)
+			return (0);
+		printf("Y: %d, X: %d\n", params->mapY, params->mapX);
 		if(prog->map[params->mapY][params->mapX] ==  '1') 
 			hit = 1;
 	}
+	return (1);
 }
 
 int	ft_draw_start_end(t_render *params)
@@ -185,16 +191,18 @@ void	ft_draw_lines(t_cub *prog, t_render *params, int lineHeight, int x)
 	}
 }
 
-void ft_loop_render(t_cub *prog, t_render *params, int x)
+int	ft_loop_render(t_cub *prog, t_render *params, int x)
 {
 	int lineHeight;
 
 	ft_side_dist(params);
-	ft_dda(prog, params);
+	if (!ft_dda(prog, params))
+		return (0);
 	lineHeight = ft_draw_start_end(params);
 	ft_draw_lines(prog, params, lineHeight, x);
 	ft_rotate(prog, params);
 	ft_move(prog, params);
+	return (1);
 }
 
 void ft_init_render(t_cub *prog, t_render *params, int x)
@@ -227,7 +235,8 @@ int ft_start(t_cub *prog)
 	for(int x = 0; x < WIDTH; x++)
 	{
 		ft_init_render(prog, params, x);
-		ft_loop_render(prog, params, x);
+		if (!ft_loop_render(prog, params, x))
+			exit(0);
 	}
 	mlx_put_image_to_window(prog->mlx, prog->win, prog->img.img, 0, 0);
 	return (1);
