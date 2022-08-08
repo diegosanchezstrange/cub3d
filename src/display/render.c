@@ -42,21 +42,23 @@ void ft_move(t_cub *prog, t_render *params)
 	t_point pos;
 	double s;
 
-	pos.x = prog->pos.x;
-	pos.y = prog->pos.y;
+	pos.x = params->pos.x;
+	pos.y = params->pos.y;
 	s = 0.00005;
+	if (prog->map[(int)pos.y][(int)pos.x] == '1')
+		return ;
 	if (prog->keys.W == 1)
 	{
-		if (prog->map[(int)pos.y][(int)(pos.x + params->dir.x *s)] != '1')
+		if (prog->map[(int)(pos.y)][(int)(pos.x + params->dir.x *s)] != '1')
 			prog->pos.x += params->dir.x * s;
-		if (prog->map[(int)(pos.y + params->dir.y * s)][(int)pos.x] != '1')
+		if (prog->map[(int)(pos.y + params->dir.y * s)][(int)(pos.x)] != '1')
 			prog->pos.y += params->dir.y * s;
 	}		
 	else if (prog->keys.S == 1)
 	{
-		if (prog->map[(int)pos.y][(int)(pos.x - params->dir.x * s)] != '1')
+		if (prog->map[(int)(pos.y)][(int)(pos.x - params->dir.x * s)] != '1')
 			prog->pos.x -= params->dir.x * s;
-		if (prog->map[(int)(pos.y - params->dir.y * s)][(int)pos.x] != '1')
+		if (prog->map[(int)(pos.y - params->dir.y * s)][(int)(pos.x)] != '1')
 			prog->pos.y -= params->dir.y * s;
 	}	
 }

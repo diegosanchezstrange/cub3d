@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
+/*   Updated: 2022/08/04 20:24:42 by mclerico         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -81,16 +93,13 @@ typedef struct	s_cub
 	int		move; // 0 right rotation, 1 left rotation
 	t_keys	keys;
 }				t_cub;
-
 //	utils/frees.c
 size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
 void	ft_free_cub(t_cub *cub);
 void	ft_free_all(t_cub *cub);
-
 // parse/utils.c
 int		is_valid_param(t_cub *cub, char *line, int *num);
-
 // parse/parse_map.c
 int		ft_check_closed(t_cub *cub);
 void 	ft_move(t_cub *prog, t_render *params);
@@ -103,15 +112,14 @@ void	plot_line(t_point p1, t_point p2, t_data img, int color);
 double	ft_abs(double num);
 // display plot
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int	get_pixel_color(t_data *data, int x, int y);
+int		get_pixel_color(t_data *data, int x, int y);
 void	vertical_line(double x, double yi, double yo, t_cub params);;
 // display text
-void init_textures(t_cub *prog);
+void	init_textures(t_cub *prog);
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
 # define WIDTH 640
 # define HEIGHT 480
-
 # define X_OFFSET 20
 # define Y_OFFSET 20
 # define NO 0
@@ -147,5 +155,4 @@ void init_textures(t_cub *prog);
 #  define KEY_PLUS 61
 #  define KEY_C 99
 # endif
-
 #endif
