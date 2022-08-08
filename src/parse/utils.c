@@ -18,19 +18,20 @@
  */
 int	check_direction_path(t_cub *cub, char **split, int *num)
 {
-	int		fd;
 	char	*path;
+	void	*img;
+	int		w;
+	int		h;
 
 	if (ft_splitlen(split) != 2)
 		return (0);
 	path = ft_strdup(split[1]);
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
+	img = mlx_xpm_file_to_image(cub->mlx, path, &w, &h);
+	if (!img)
 	{
 		free(path);
 		return (0);
 	}
-	close(fd);
 	if (!ft_strncmp(split[0], "NO", 2))
 		cub->NO_path = path;
 	else if (!ft_strncmp(split[0], "SO", 2))

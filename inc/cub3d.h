@@ -62,6 +62,8 @@ typedef	struct	s_render
 	int		mapY;
 	int		side;
 	double	perpWallDist;
+	int		drawStart;
+	int		drawEnd;
 }				t_render;
 
 typedef struct	s_cub

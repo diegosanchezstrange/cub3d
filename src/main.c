@@ -67,6 +67,10 @@ int	ft_init_prog(t_cub *prog)
 	prog->keys.LEFT = 0;
 	prog->keys.RIGHT = 0;
 	prog->params = ft_calloc(1, sizeof(t_render));
+	prog->NO_path = NULL;
+	prog->SO_path = NULL;
+	prog->WE_path = NULL;
+	prog->EA_path = NULL;
 	if (!prog->params)
 		return (0);
 	prog->params->dir.x =0;
@@ -84,22 +88,18 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!ft_init_prog(&prog))
 		return (1);
+	prog.mlx = mlx_init();
 	if (!ft_parse_file(argv[1], &prog))
 	{
 		ft_free_cub(&prog);
 		return (2);
 	}
-	prog.mlx = mlx_init();
 	prog.win = mlx_new_window(prog.mlx, WIDTH, HEIGHT, "cub3d");
-
 	mlx_hook(prog.win, 2, 1L << 0, ft_hooks_press, &prog);
 	mlx_hook(prog.win, 3, 1L << 1, ft_hooks_release, &prog);
-
 	prog.img.img = mlx_new_image(prog.mlx, WIDTH, HEIGHT);
 	prog.img.addr = mlx_get_data_addr(prog.img.img, &(prog.img.bits_per_pixel),
 			&(prog.img.line_length), &(prog.img.endian));
-	//initialize_pos(&prog);
-	//ft_start(&prog);
 	init_textures(&prog);
 	mlx_loop_hook(prog.mlx, ft_start, &prog);
 	mlx_loop(prog.mlx);
