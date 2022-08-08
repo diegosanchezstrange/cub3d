@@ -109,7 +109,6 @@ int	ft_dda(t_cub *prog, t_render *params)
 			return (0);
 		if (params->mapX < 0 || (size_t)params->mapX >= prog->map_w)
 			return (0);
-		printf("Y: %d, X: %d\n", params->mapY, params->mapX);
 		if(prog->map[params->mapY][params->mapX] ==  '1') 
 			hit = 1;
 	}
