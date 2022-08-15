@@ -37,26 +37,57 @@ void ft_rotate(t_cub *prog, t_render *params)
 	}	
 }
 
+int	ft_round_x(double num, t_render *params)
+{
+	if (params->dir.x > 0)
+	{
+		if (0.8f < (num - floor(num)))
+			return ((int)ceil(num));
+	}
+	else
+	{
+		if (0.1f < (num - floor(num)))
+			return ((int)(num) - 1);
+	}
+	return ((int)num);
+}
+
+int	ft_round_y(double num, t_render *params)
+{
+	if (params->dir.y > 0)
+	{
+		if (0.8f < (num - floor(num)))
+			return ((int)ceil(num));
+	}
+	else
+	{
+		if (0.1f < (num - floor(num)))
+			return ((int)(num) - 1);
+	}
+	return ((int)num);
+
+}
+
 void ft_move(t_cub *prog, t_render *params)
 {
-	t_point pos;
-	double s;
+	t_point	pos;
+	double	s;
 
 	pos.x = params->pos.x;
 	pos.y = params->pos.y;
-	s = 0.00005;
+	s = 0.025;
 	if (prog->map[(int)pos.y][(int)pos.x] == '1')
 		return ;
 	if (prog->keys.W == 1)
 	{
-		if (prog->map[(int)(pos.y)][(int)(pos.x + params->dir.x *s)] != '1')
+		if (prog->map[(int)pos.y][(int)(pos.x + params->dir.x * s)] != '1')
 			prog->pos.x += params->dir.x * s;
-		if (prog->map[(int)(pos.y + params->dir.y * s)][(int)(pos.x)] != '1')
+		if (prog->map[(int)(pos.y + params->dir.y * s)][(int)pos.x] != '1')
 			prog->pos.y += params->dir.y * s;
 	}		
 	else if (prog->keys.S == 1)
 	{
-		if (prog->map[(int)(pos.y)][(int)(pos.x - params->dir.x * s)] != '1')
+		if (prog->map[(int)pos.y][(int)(pos.x - params->dir.x * s)] != '1')
 			prog->pos.x -= params->dir.x * s;
 		if (prog->map[(int)(pos.y - params->dir.y * s)][(int)(pos.x)] != '1')
 			prog->pos.y -= params->dir.y * s;

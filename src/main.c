@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */ 
 /*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */ 
-/*   Updated: 2022/08/01 21:13:41 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/15 18:55:48 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,14 @@ int	ft_hooks_press(int keycode, t_cub *vars)
 		vars->keys.RIGHT = 1;
 	else if (keycode == KEY_LEFT)
 		vars->keys.LEFT = 1;
-	else if (keycode == KEY_UP)
+	else if (keycode == KEY_W)
 		vars->keys.W = 1;
-	else if (keycode == KEY_DOWN)
+	else if (keycode == KEY_S)
 		vars->keys.S = 1;
-	//ft_start(vars);
+	else if (keycode == KEY_A)
+		vars->keys.A = 1;
+	else if (keycode == KEY_D)
+		vars->keys.D = 1;
 	return (0);
 }
 int	ft_hooks_release(int keycode, t_cub *vars)
@@ -42,10 +45,14 @@ int	ft_hooks_release(int keycode, t_cub *vars)
 		vars->keys.RIGHT = 0;
 	else if (keycode == KEY_LEFT)
 		vars->keys.LEFT = 0;
-	else if (keycode == KEY_UP)
+	else if (keycode == KEY_W)
 		vars->keys.W = 0;
-	else if (keycode == KEY_DOWN)
+	else if (keycode == KEY_S)
 		vars->keys.S = 0;
+	else if (keycode == KEY_A)
+		vars->keys.A = 0;
+	else if (keycode == KEY_D)
+		vars->keys.D = 0;
 	return (0);
 }
 

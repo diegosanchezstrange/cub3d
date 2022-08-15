@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
-/*   Updated: 2022/08/04 20:24:42 by mclerico         ###   ########.fr       */
+/*   Updated: 2022/08/15 18:48:46 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	vertical_line(double x, double yi, double yo, t_cub params);;
 void	init_textures(t_cub *prog);
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
-# define WIDTH 640
+# define WIDTH 720
 # define HEIGHT 480
 # define X_OFFSET 20
 # define Y_OFFSET 20
@@ -137,6 +137,10 @@ void	init_textures(t_cub *prog);
 #  define KEY_P 35
 #  define KEY_PLUS 69
 #  define KEY_C 8
+#  define KEY_W 13
+#  define KEY_A 0
+#  define KEY_S 1
+#  define KEY_D 2
 # elif LINUX
 #  define KEY_ESC 65307
 #  define KEY_UP 65362
