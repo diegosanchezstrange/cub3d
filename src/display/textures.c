@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:17:32 by mclerico          #+#    #+#             */
-/*   Updated: 2022/08/04 20:21:07 by mclerico         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:33:20 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	load_textures(t_cub *prog, t_text *texture, char *path)
 
 void	init_textures(t_cub *prog)
 {
-	if (!load_textures(prog, &prog->tex[0], prog->NO_path)
-		|| !load_textures(prog, &prog->tex[1], prog->SO_path)
-		|| !load_textures(prog, &prog->tex[2], prog->WE_path)
-		|| !load_textures(prog, &prog->tex[3], prog->EA_path))
+	if (!load_textures(prog, &prog->tex[0], prog->no_path)
+		|| !load_textures(prog, &prog->tex[1], prog->so_path)
+		|| !load_textures(prog, &prog->tex[2], prog->we_path)
+		|| !load_textures(prog, &prog->tex[3], prog->ea_path))
 	{
 		return ;
 	}

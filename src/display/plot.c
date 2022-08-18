@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:12:18 by mclerico          #+#    #+#             */
-/*   Updated: 2022/08/04 20:16:56 by mclerico         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:31:57 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void	vertical_line(double x, double yi, double yo, t_cub params)
 
 	s = ft_bigger(yi, yo);
 	if (yi == 0)
-		color = get_fromrgb(params.C_color);
+		color = get_fromrgb(params.c_color);
 	else
-		color = get_fromrgb(params.F_color);
+		color = get_fromrgb(params.f_color);
 	while (yi != yo)
 	{
 		my_mlx_pixel_put(&(params.img), x, yi, color);

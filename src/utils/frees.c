@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:37:06 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/07/23 18:37:09 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:31:26 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	ft_free_split(char **split)
 void	ft_free_cub(t_cub *cub)
 {
 	ft_free_split(cub->map);
-	free(cub->NO_path);
-	free(cub->SO_path);
-	free(cub->WE_path);
-	free(cub->EA_path);
+	free(cub->no_path);
+	free(cub->so_path);
+	free(cub->we_path);
+	free(cub->ea_path);
 }
 
 void ft_free_all(t_cub *cub)

@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/07/23 18:37:01 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:30:58 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 		return (0);
 	}
 	if (!ft_strncmp(split[0], "NO", 2))
-		cub->NO_path = path;
+		cub->no_path = path;
 	else if (!ft_strncmp(split[0], "SO", 2))
-		cub->SO_path = path;
+		cub->so_path = path;
 	else if (!ft_strncmp(split[0], "WE", 2))
-		cub->WE_path = path;
+		cub->we_path = path;
 	else if (!ft_strncmp(split[0], "EA", 2))
-		cub->EA_path = path;
+		cub->ea_path = path;
 	*num += 1;
 	return (1);
 }
@@ -66,9 +66,9 @@ int	check_color_code(t_cub *cub, char **split, int *num)
 		if ((n < 0) | (n > 255))
 			return (0);
 		else if (!ft_strncmp(split[0], "F", 1))
-			cub->F_color[i] = n;
+			cub->f_color[i] = n;
 		else if (!ft_strncmp(split[0], "C", 1))
-			cub->C_color[i] = n;
+			cub->c_color[i] = n;
 		i++;
 	}
 	ft_free_split(colors);

@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
-/*   Updated: 2022/08/15 18:48:46 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:35:10 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <math.h>
 
 typedef struct s_data{
 	void	*img;
@@ -34,90 +35,95 @@ typedef struct s_point{
 }				t_point;
 
 typedef struct s_keys{
-	int	W;
-	int	A;
-	int	S;
-	int	D;
-	int	RIGHT;
-	int	LEFT;
+	int	w;
+	int	a;
+	int	s;
+	int	d;
+	int	right;
+	int	left;
 }				t_keys;
 
 typedef struct s_text{
-	int	h;
-	int w;
-	t_data img;
+	int		h;
+	int		w;
+	t_data	img;
 }				t_text;
 
-typedef	struct	s_render
+typedef struct s_render
 {
 	t_point	pos;
 	t_point	dir;
 	t_point	plane;
-	t_point	rayDir;
-	t_point	sideDist;
-	t_point	deltaDist;
-	int		stepX;
-	int		stepY;
-	int		mapX;
-	int		mapY;
+	t_point	ray_dir;
+	t_point	side_dist;
+	t_point	delta_dist;
+	int		step_x;
+	int		step_y;
+	int		map_x;
+	int		map_y;
 	int		side;
-	double	perpWallDist;
-	int		drawStart;
-	int		drawEnd;
+	double	perp_wall_dist;
+	int		draw_start;
+	int		draw_end;
 }				t_render;
 
-typedef struct	s_cub
+typedef struct s_cub
 {
-	//mlx
-	void	*mlx;
-	void	*win;
-	t_data	img;
-	//textures
-	char	*NO_path;
-	char	*SO_path;
-	char	*WE_path;
-	char	*EA_path;
-	//colors
-	int		F_color[3];
-	int		C_color[3];
-	//tex rendering
-	int 	texY;
-	int 	texX;
-	char	**map;
-	char	starting_way;
-	t_point	pos;
-	t_point	dir;
-	t_point	plane;
+	void		*mlx;
+	void		*win;
+	t_data		img;
+	char		*no_path;
+	char		*so_path;
+	char		*we_path;
+	char		*ea_path;
+	int			f_color[3];
+	int			c_color[3];
+	int			tex_y;
+	int			tex_x;
+	char		**map;
+	char		starting_way;
+	t_point		pos;
 	t_render	*params;
-	t_text	tex[4]; // same order as the one above
-	size_t	map_w;
-	size_t	map_h;
-	int		move; // 0 right rotation, 1 left rotation
-	t_keys	keys;
+	t_text		tex[4];
+	size_t		map_w;
+	size_t		map_h;
+	int			move;
+	t_keys		keys;
 }				t_cub;
+
 //	utils/frees.c
 size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
 void	ft_free_cub(t_cub *cub);
 void	ft_free_all(t_cub *cub);
+
 // parse/utils.c
 int		is_valid_param(t_cub *cub, char *line, int *num);
-// parse/parse_map.c
-int		ft_check_closed(t_cub *cub);
-void 	ft_move(t_cub *prog, t_render *params);
-void 	ft_rotate(t_cub *prog, t_render *params);
-void	ft_resize_map(t_cub *cub);
-// parse/parse.c
-int		ft_parse_file(char *filename, t_cub *cub);
-int		ft_start(t_cub *prog);
-void	plot_line(t_point p1, t_point p2, t_data img, int color);
-double	ft_abs(double num);
-// display plot
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int		get_pixel_color(t_data *data, int x, int y);
-void	vertical_line(double x, double yi, double yo, t_cub params);;
+
 // display text
 void	init_textures(t_cub *prog);
+
+// parse/parse_map.c
+int		ft_check_closed(t_cub *cub);
+void	ft_resize_map(t_cub *cub);
+
+// parse/parse.c
+int		ft_parse_file(char *filename, t_cub *cub);
+void	plot_line(t_point p1, t_point p2, t_data img, int color);
+double	ft_abs(double num);
+
+// display/transform.c
+void	ft_move(t_cub *prog, t_render *params);
+void	ft_rotate(t_cub *prog, t_render *params);
+
+// display/plot.c
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int		get_pixel_color(t_data *data, int x, int y);
+void	vertical_line(double x, double yi, double yo, t_cub params);
+
+// display/render.c
+int		ft_start(t_cub *prog);
+
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
 # define WIDTH 720
@@ -150,6 +156,10 @@ void	init_textures(t_cub *prog);
 #  define KEY_P 112
 #  define KEY_PLUS 43
 #  define KEY_C 99
+#  define KEY_W 119
+#  define KEY_A 97
+#  define KEY_S 115
+#  define KEY_D 100
 # else
 #  define LINUX
 #  define KEY_ESC 65307
@@ -160,5 +170,9 @@ void	init_textures(t_cub *prog);
 #  define KEY_P 112
 #  define KEY_PLUS 61
 #  define KEY_C 99
+#  define KEY_W 13
+#  define KEY_A 0
+#  define KEY_S 1
+#  define KEY_D 2
 # endif
 #endif

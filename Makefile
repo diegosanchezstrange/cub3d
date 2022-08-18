@@ -8,7 +8,7 @@ SRCS_MAIN	= main.c
 
 SRCS_PARSE	= parse.c parse_map.c utils.c
 
-SRCS_DISPLAY	= plot.c render.c textures.c
+SRCS_DISPLAY	= plot.c render.c textures.c transform.c
 
 SRCS_UTILS	= frees.c
 

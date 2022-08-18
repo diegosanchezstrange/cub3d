@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */ 
 /*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */ 
-/*   Updated: 2022/08/15 18:55:48 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:29:20 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,33 @@ int	ft_hooks_press(int keycode, t_cub *vars)
 		return (1);
 	}
 	if (keycode == KEY_RIGHT)
-		vars->keys.RIGHT = 1;
+		vars->keys.right = 1;
 	else if (keycode == KEY_LEFT)
-		vars->keys.LEFT = 1;
+		vars->keys.left = 1;
 	else if (keycode == KEY_W)
-		vars->keys.W = 1;
+		vars->keys.w = 1;
 	else if (keycode == KEY_S)
-		vars->keys.S = 1;
+		vars->keys.s = 1;
 	else if (keycode == KEY_A)
-		vars->keys.A = 1;
+		vars->keys.a = 1;
 	else if (keycode == KEY_D)
-		vars->keys.D = 1;
+		vars->keys.d = 1;
 	return (0);
 }
 int	ft_hooks_release(int keycode, t_cub *vars)
 {
 	if (keycode == KEY_RIGHT)
-		vars->keys.RIGHT = 0;
+		vars->keys.right = 0;
 	else if (keycode == KEY_LEFT)
-		vars->keys.LEFT = 0;
+		vars->keys.left = 0;
 	else if (keycode == KEY_W)
-		vars->keys.W = 0;
+		vars->keys.w = 0;
 	else if (keycode == KEY_S)
-		vars->keys.S = 0;
+		vars->keys.s = 0;
 	else if (keycode == KEY_A)
-		vars->keys.A = 0;
+		vars->keys.a = 0;
 	else if (keycode == KEY_D)
-		vars->keys.D = 0;
+		vars->keys.d = 0;
 	return (0);
 }
 
@@ -67,17 +67,17 @@ int	ft_init_prog(t_cub *prog)
 	prog->starting_way = 0;
 	prog->pos.y = 0;
 	prog->pos.x = 0;
-	prog->keys.W = 0;
-	prog->keys.A = 0;
-	prog->keys.S = 0;
-	prog->keys.D = 0;
-	prog->keys.LEFT = 0;
-	prog->keys.RIGHT = 0;
+	prog->keys.w = 0;
+	prog->keys.a = 0;
+	prog->keys.s = 0;
+	prog->keys.d = 0;
+	prog->keys.left = 0;
+	prog->keys.right = 0;
 	prog->params = ft_calloc(1, sizeof(t_render));
-	prog->NO_path = NULL;
-	prog->SO_path = NULL;
-	prog->WE_path = NULL;
-	prog->EA_path = NULL;
+	prog->no_path = NULL;
+	prog->so_path = NULL;
+	prog->we_path = NULL;
+	prog->ea_path = NULL;
 	if (!prog->params)
 		return (0);
 	prog->params->dir.x =0;
