@@ -4,9 +4,9 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */ 
-/*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */ 
-/*   Updated: 2022/08/18 18:29:20 by dsanchez         ###   ########.fr       */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */
+/*   Updated: 2022/08/18 18:48:21 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	ft_hooks_press(int keycode, t_cub *vars)
 		vars->keys.d = 1;
 	return (0);
 }
+
 int	ft_hooks_release(int keycode, t_cub *vars)
 {
 	if (keycode == KEY_RIGHT)
@@ -54,6 +55,22 @@ int	ft_hooks_release(int keycode, t_cub *vars)
 	else if (keycode == KEY_D)
 		vars->keys.d = 0;
 	return (0);
+}
+
+int	ft_init_params(t_cub *prog)
+{
+	prog->params = ft_calloc(1, sizeof(t_render));
+	prog->no_path = NULL;
+	prog->so_path = NULL;
+	prog->we_path = NULL;
+	prog->ea_path = NULL;
+	if (!prog->params)
+		return (0);
+	prog->params->dir.x = 0;
+	prog->params->dir.y = -1;
+	prog->params->plane.x = 0.66;
+	prog->params->plane.y = 0;
+	return (1);
 }
 
 int	ft_init_prog(t_cub *prog)
@@ -73,18 +90,7 @@ int	ft_init_prog(t_cub *prog)
 	prog->keys.d = 0;
 	prog->keys.left = 0;
 	prog->keys.right = 0;
-	prog->params = ft_calloc(1, sizeof(t_render));
-	prog->no_path = NULL;
-	prog->so_path = NULL;
-	prog->we_path = NULL;
-	prog->ea_path = NULL;
-	if (!prog->params)
-		return (0);
-	prog->params->dir.x =0;
-	prog->params->dir.y = -1; //initial direction vector
-	prog->params->plane.x= 0.66;
-	prog->params->plane.y = 0; //the 2d raycaster version of camera plane
-	return (1);
+	return (ft_init_params(prog));
 }
 
 int	main(int argc, char **argv)

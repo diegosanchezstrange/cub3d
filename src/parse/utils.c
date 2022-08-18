@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/18 18:30:58 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:50:36 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	is_valid_param(t_cub *cub, char *line, int *num)
 		|| !ft_strncmp(first, "WE", l) || !ft_strncmp(first, "EA", l))
 		r = check_direction_path(cub, split, num);
 	else if (!ft_strncmp(first, "F", l) || !ft_strncmp(first, "C", l))
-		r =  check_color_code(cub, split, num);
+		r = check_color_code(cub, split, num);
 	if (r != 0)
 		free(line);
 	ft_free_split(split);

@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
-/*   Updated: 2022/08/18 18:35:10 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/18 21:13:12 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,18 @@ double	ft_abs(double num);
 // display/transform.c
 void	ft_move(t_cub *prog, t_render *params);
 void	ft_rotate(t_cub *prog, t_render *params);
+int		ft_texnum(t_render *params);
 
 // display/plot.c
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		get_pixel_color(t_data *data, int x, int y);
 void	vertical_line(double x, double yi, double yo, t_cub params);
+
+// display/render_utils.c
+double	ft_abs(double num);
+void	ft_side_dist(t_render *params);
+int		ft_dda(t_cub *prog, t_render *params);
+int		ft_draw_start_end(t_render *params);
 
 // display/render.c
 int		ft_start(t_cub *prog);
@@ -134,6 +141,7 @@ int		ft_start(t_cub *prog);
 # define SO 1
 # define WE 2
 # define EA 3
+
 # ifdef OSX
 #  define KEY_ESC 53
 #  define KEY_UP 126
@@ -170,9 +178,9 @@ int		ft_start(t_cub *prog);
 #  define KEY_P 112
 #  define KEY_PLUS 61
 #  define KEY_C 99
-#  define KEY_W 13
-#  define KEY_A 0
-#  define KEY_S 1
-#  define KEY_D 2
+#  define KEY_W 119
+#  define KEY_A 97
+#  define KEY_S 115
+#  define KEY_D 100
 # endif
 #endif

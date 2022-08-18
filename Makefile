@@ -2,13 +2,13 @@ NAME	= cub3d
 
 CC		= gcc
 
-CFLAGS	= -Wall -Werror -Wextra -O3 -D BUFFER_SIZE=32 -g3 -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra -O3 -D BUFFER_SIZE=32 #-g3 -fsanitize=address
 
 SRCS_MAIN	= main.c
 
 SRCS_PARSE	= parse.c parse_map.c utils.c
 
-SRCS_DISPLAY	= plot.c render.c textures.c transform.c
+SRCS_DISPLAY	= plot.c render.c  render_utils.c textures.c transform.c
 
 SRCS_UTILS	= frees.c
 
