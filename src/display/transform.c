@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 17:42:38 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/18 21:48:20 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/25 21:07:47 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,36 +57,31 @@ void	ft_rotate(t_cub *prog, t_render *params)
 	}	
 }
 
-/*int	ft_round_x(double num, t_render *params)
+void	ft_move_side(t_cub *prog, t_render *params)
 {
-	if (params->dir.x > 0)
+	t_point	pos;
+	double	s;
+
+	pos.x = params->pos.x;
+	pos.y = params->pos.y;
+	s = 0.00008;
+	//if (prog->map[(int)pos.y][(int)pos.x] == '1')
+		//return ;
+	if (prog->keys.d == 1)
 	{
-		if (0.8f < (num - floor(num)))
-			return ((int)ceil(num));
-	}
-	else
+		if (prog->map[(int)pos.y][(int)(pos.x + params->plane.x * s)] != '1')
+			prog->pos.x += params->plane.x * s;
+		if (prog->map[(int)(pos.y + params->plane.y * s)][(int)pos.x] != '1')
+			prog->pos.y += params->plane.y * s;
+	}		
+	else if (prog->keys.a == 1)
 	{
-		if (0.1f < (num - floor(num)))
-			return ((int)(num) - 1);
-	}
-	return ((int)num);
+		if (prog->map[(int)pos.y][(int)(pos.x - params->plane.x * s)] != '1')
+			prog->pos.x -= params->plane.x * s;
+		if (prog->map[(int)(pos.y - params->plane.y * s)][(int)(pos.x)] != '1')
+			prog->pos.y -= params->plane.y * s;
+	}	
 }
-
-int	ft_round_y(double num, t_render *params)
-{
-	if (params->dir.y > 0)
-	{
-		if (0.8f < (num - floor(num)))
-			return ((int)ceil(num));
-	}
-	else
-	{
-		if (0.1f < (num - floor(num)))
-			return ((int)(num) - 1);
-	}
-	return ((int)num);
-
-}*/
 
 void	ft_move(t_cub *prog, t_render *params)
 {
@@ -96,8 +91,8 @@ void	ft_move(t_cub *prog, t_render *params)
 	pos.x = params->pos.x;
 	pos.y = params->pos.y;
 	s = 0.00008;
-	if (prog->map[(int)pos.y][(int)pos.x] == '1')
-		return ;
+	//if (prog->map[(int)pos.y][(int)pos.x] == '1')
+		//return ;
 	if (prog->keys.w == 1)
 	{
 		if (prog->map[(int)pos.y][(int)(pos.x + params->dir.x * s)] != '1')
@@ -112,4 +107,5 @@ void	ft_move(t_cub *prog, t_render *params)
 		if (prog->map[(int)(pos.y - params->dir.y * s)][(int)(pos.x)] != '1')
 			prog->pos.y -= params->dir.y * s;
 	}	
+	ft_move_side(prog, params);
 }
