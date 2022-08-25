@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:38:02 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/01 21:21:09 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/25 20:18:17 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int	ft_parse_file(char *filename, t_cub *cub)
 	}
 	close(fd);
 	free(line);
+	if (!cub->starting_way)
+		return (ft_error("No starting way\n"));
 	ft_resize_map(cub);
 	return (ft_check_closed(cub));
 }

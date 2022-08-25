@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
-/*   Updated: 2022/08/18 21:13:12 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/25 20:10:28 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
 void	ft_free_cub(t_cub *cub);
 void	ft_free_all(t_cub *cub);
+
+// utils/errors.c
+int		ft_error(char *msg);
 
 // parse/utils.c
 int		is_valid_param(t_cub *cub, char *line, int *num);
