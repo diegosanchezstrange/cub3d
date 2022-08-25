@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 19:27:15 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/18 19:27:39 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/25 19:43:59 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	ft_draw_start_end(t_render *params)
 	else
 		params->perp_wall_dist = (params->side_dist.y - params->delta_dist.y);
 	line_height = (int)(HEIGHT / params->perp_wall_dist);
+	if (line_height < 0)
+		line_height = INT_MAX;
 	params->draw_start = -line_height / 2 + HEIGHT / 2;
 	if (params->draw_start < 0)
 		params->draw_start = 0;

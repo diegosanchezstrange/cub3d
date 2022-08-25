@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 18:53:55 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/18 21:56:29 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/25 19:44:44 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ int	ft_loop_render(t_cub *prog, t_render *params, int x)
 {
 	int	line_height;
 
-	printf("X: %f , Y: %f \n", params->pos.x, params->pos.y);
-	printf("pos %c \n", prog->map[(int) params->pos.y][(int) params->pos.x]);
 	ft_side_dist(params);
 	if (!ft_dda(prog, params))
 		return (0);
