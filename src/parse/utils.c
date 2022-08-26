@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/18 18:50:36 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:46:11 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 		cub->we_path = path;
 	else if (!ft_strncmp(split[0], "EA", 2))
 		cub->ea_path = path;
+	free(img);
 	*num += 1;
 	return (1);
 }

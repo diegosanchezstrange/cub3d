@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:38:02 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/25 20:18:17 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:49:12 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ int	ft_parse_line(char *line, t_cub *cub, int *num)
 	int	ret;
 
 	if (ft_strlen(line) <= 1)
+	{
 		ret = *num != -1;
+		free(line);
+	}
 	else if (*num < 6 && *num != -1)
 		ret = is_valid_param(cub, line, num);
 	else

@@ -2,7 +2,7 @@ NAME	= cub3d
 
 CC		= gcc
 
-CFLAGS	= -Wall -Werror -Wextra -O3 -D BUFFER_SIZE=32 #-g3 -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra -O3 -D BUFFER_SIZE=32 -g3 -fsanitize=address
 
 SRCS_MAIN	= main.c
 
