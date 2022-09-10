@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/26 19:11:57 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 19:02:32 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	ft_init_prog(t_cub *prog)
 	return (ft_init_params(prog));
 }
 
-int	main(int argc, char **argv)
+int	prog(int argc, char **argv)
 {
 	t_cub	prog;
 
@@ -104,6 +104,7 @@ int	main(int argc, char **argv)
 	if (!ft_parse_file(argv[1], &prog))
 	{
 		ft_free_cub(&prog);
+		free(prog.mlx);
 		return (2);
 	}
 	prog.win = mlx_new_window(prog.mlx, WIDTH, HEIGHT, "cub3d");
@@ -115,6 +116,13 @@ int	main(int argc, char **argv)
 	init_textures(&prog);
 	mlx_loop_hook(prog.mlx, ft_start, &prog);
 	mlx_loop(prog.mlx);
-	ft_free_all(&prog);
+	//ft_free_all(&prog);
 	return (0);
 }
+int	main(int argc, char **argv)
+{
+	prog(argc, argv);
+	return (0);
+}
+
+

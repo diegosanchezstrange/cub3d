@@ -6,11 +6,29 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/09/10 14:19:25 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 19:37:50 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
+
+t_data get_xpm_image(t_cub *cub, char *path)
+{
+	t_data	img;
+	int		w;
+	int		h;
+
+	img.img = mlx_xpm_file_to_image(cub->mlx, path, &w, &h);
+	if (!img.img)
+	{
+		free(path);
+		return (img);
+	}
+	img.addr = mlx_get_data_addr(img.img,
+			&img.bits_per_pixel, &img.line_length,
+			&img.endian);
+	return (img);
+}
 
 /*
  * Check if the files for the textures exist and save the path
@@ -19,21 +37,13 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 {
 	char	*path;
 	t_data	img;
-	int		w;
-	int		h;
 
 	if (ft_splitlen(split) != 2)
 		return (0);
 	path = ft_strdup(split[1]);
-	img.img = mlx_xpm_file_to_image(cub->mlx, path, &w, &h);
-	img.addr = mlx_get_data_addr(img.img,
-			&img.bits_per_pixel, &img.line_length,
-			&img.endian);
+	img = get_xpm_image(cub, path);
 	if (!img.img)
-	{
-		free(path);
 		return (0);
-	}
 	if (!ft_strncmp(split[0], "NO", 2))
 		cub->no_path = path;
 	else if (!ft_strncmp(split[0], "SO", 2))
@@ -58,16 +68,17 @@ int	check_color_code(t_cub *cub, char **split, int *num)
 	int		n;
 
 	i = 0;
+	n = 0;
 	if (ft_splitlen(split) != 2)
 		return (0);
 	colors = ft_split(split[1], ',');
 	if (ft_splitlen(colors) != 3)
-		return (0);
-	while (i < 3)
+		n = -1;
+	while (i < 3 && n != -1)
 	{
 		n = ft_atoi(colors[i]);
 		if ((n < 0) | (n > 255))
-			return (0);
+			n = -1;
 		else if (!ft_strncmp(split[0], "F", 1))
 			cub->f_color[i] = n;
 		else if (!ft_strncmp(split[0], "C", 1))
@@ -76,7 +87,7 @@ int	check_color_code(t_cub *cub, char **split, int *num)
 	}
 	ft_free_split(colors);
 	*num += 1;
-	return (1);
+	return (n != -1);
 }
 
 int	is_valid_param(t_cub *cub, char *line, int *num)
