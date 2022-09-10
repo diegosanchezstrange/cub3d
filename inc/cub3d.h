@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
-/*   Updated: 2022/09/10 14:19:24 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 20:42:56 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,14 @@ typedef struct s_cub
 	t_keys		keys;
 }				t_cub;
 
+//	utils/utils.c
+int		ft_max(int x, int y);
+
+//	utils/hooks.c
+int		ft_close(t_cub *cub);
+int		ft_hooks_press(int keycode, t_cub *vars);
+int		ft_hooks_release(int keycode, t_cub *vars);
+
 //	utils/frees.c
 size_t	ft_splitlen(char **split);
 void	ft_free_split(char **split);
@@ -102,6 +110,7 @@ int		ft_error(char *msg);
 
 // parse/utils.c
 int		is_valid_param(t_cub *cub, char *line, int *num);
+int		ft_check_file_extension(char *name);
 
 // display text
 void	init_textures(t_cub *prog);

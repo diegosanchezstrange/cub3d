@@ -10,7 +10,7 @@ SRCS_PARSE	= parse.c parse_map.c utils.c
 
 SRCS_DISPLAY	= plot.c render.c  render_utils.c textures.c transform.c
 
-SRCS_UTILS	= frees.c errors.c
+SRCS_UTILS	= frees.c errors.c utils.c hooks.c
 
 SRCS		= ${SRCS_MAIN} \
 				$(addprefix parse/, $(SRCS_PARSE)) \

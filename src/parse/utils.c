@@ -6,11 +6,36 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/09/10 19:37:50 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 20:35:21 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
+
+int	ft_check_file_extension(char *name)
+{
+	char	**split;
+	int		i;
+
+	split = ft_split(name, '.');
+	i = 0;
+	while (split[i])
+		i++;
+	if (i <= 1)
+	{
+		ft_free_split(split);
+		printf("Error in file format \n");
+		return (0);
+	}
+	if (ft_strncmp(split[i - 1], "cub", ft_max(3, ft_strlen(split[i - 1]))))
+	{
+		ft_free_split(split);
+		printf("Error in file format \n");
+		return (0);
+	}
+	ft_free_split(split);
+	return (1);
+}
 
 t_data get_xpm_image(t_cub *cub, char *path)
 {
