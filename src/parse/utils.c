@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/26 18:46:11 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:19:25 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 /*
  * Check if the files for the textures exist and save the path
- * on the cub structure.
- */
+ * on the cub structure.  */
 int	check_direction_path(t_cub *cub, char **split, int *num)
 {
 	char	*path;
-	void	*img;
+	t_data	img;
 	int		w;
 	int		h;
 
 	if (ft_splitlen(split) != 2)
 		return (0);
 	path = ft_strdup(split[1]);
-	img = mlx_xpm_file_to_image(cub->mlx, path, &w, &h);
-	if (!img)
+	img.img = mlx_xpm_file_to_image(cub->mlx, path, &w, &h);
+	img.addr = mlx_get_data_addr(img.img,
+			&img.bits_per_pixel, &img.line_length,
+			&img.endian);
+	if (!img.img)
 	{
 		free(path);
 		return (0);
@@ -40,7 +42,7 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 		cub->we_path = path;
 	else if (!ft_strncmp(split[0], "EA", 2))
 		cub->ea_path = path;
-	free(img);
+	mlx_destroy_image(cub->mlx, img.img);
 	*num += 1;
 	return (1);
 }

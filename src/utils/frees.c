@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:37:06 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/08/26 19:13:08 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:19:23 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void	ft_free_cub(t_cub *cub)
 
 void	ft_free_all(t_cub *cub)
 {
-	ft_free_cub(cub);
-	mlx_destroy_window(cub->mlx, cub->win);
 	mlx_destroy_image(cub->mlx, cub->img.img);
 	mlx_destroy_image(cub->mlx, cub->tex[0].img.img);
 	mlx_destroy_image(cub->mlx, cub->tex[1].img.img);
 	mlx_destroy_image(cub->mlx, cub->tex[2].img.img);
 	mlx_destroy_image(cub->mlx, cub->tex[3].img.img);
+	mlx_destroy_window(cub->mlx, cub->win);
+	ft_free_cub(cub);
 }
