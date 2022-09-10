@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/09/10 20:35:21 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 21:04:49 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_check_file_extension(char *name)
 	return (1);
 }
 
-t_data get_xpm_image(t_cub *cub, char *path)
+t_data	get_xpm_image(t_cub *cub, char *path)
 {
 	t_data	img;
 	int		w;

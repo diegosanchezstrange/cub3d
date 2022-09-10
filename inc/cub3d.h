@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
-/*   Updated: 2022/09/10 20:42:56 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 20:56:28 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ typedef struct s_cub
 	int			move;
 	t_keys		keys;
 }				t_cub;
+
+void	ft_set_dir(t_cub *prog);
 
 //	utils/utils.c
 int		ft_max(int x, int y);

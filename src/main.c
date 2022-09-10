@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/09/10 20:43:28 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/10 21:04:12 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,44 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+void	ft_set_dir_2(t_cub *prog)
+{
+	if (prog->starting_way == 'W')
+	{
+		prog->params->plane.x = 0.66;
+		prog->params->plane.y = 0;
+		prog->params->dir.x = 0;
+		prog->params->dir.y = -1;
+	}
+	else if (prog->starting_way == 'N')
+	{
+		prog->params->plane.x = 0;
+		prog->params->plane.y = 0.66;
+		prog->params->dir.x = 1;
+		prog->params->dir.y = 0;
+	}
+}
+
+void	ft_set_dir(t_cub *prog)
+{
+	if (prog->starting_way == 'E')
+	{
+		prog->params->plane.x = -0.66;
+		prog->params->plane.y = 0;
+		prog->params->dir.x = 0;
+		prog->params->dir.y = 1;
+	}
+	else if (prog->starting_way == 'S')
+	{
+		prog->params->plane.x = 0;
+		prog->params->plane.y = -0.66;
+		prog->params->dir.x = -1;
+		prog->params->dir.y = 0;
+	}
+	else
+		ft_set_dir_2(prog);
+}
 
 int	ft_init_params(t_cub *prog)
 {
@@ -25,10 +63,6 @@ int	ft_init_params(t_cub *prog)
 	prog->ea_path = NULL;
 	if (!prog->params)
 		return (0);
-	prog->params->dir.x = 0;
-	prog->params->dir.y = -1;
-	prog->params->plane.x = 0.66;
-	prog->params->plane.y = 0;
 	return (1);
 }
 
@@ -75,10 +109,8 @@ int	main(int argc, char **argv)
 	prog.img.addr = mlx_get_data_addr(prog.img.img, &(prog.img.bits_per_pixel),
 			&(prog.img.line_length), &(prog.img.endian));
 	init_textures(&prog);
+	ft_set_dir(&prog);
 	mlx_loop_hook(prog.mlx, ft_start, &prog);
 	mlx_loop(prog.mlx);
-	//ft_free_all(&prog);
 	return (0);
 }
-
-
