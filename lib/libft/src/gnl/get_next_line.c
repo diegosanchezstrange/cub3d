@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 20:47:40 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/07/15 22:22:55 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/15 18:05:06 by mclerico         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,8 @@ char	*get_next_line(int fd)
 {
 	char		*buff;
 	int			r;
-	int			i;
 	static char	*line;
 
-	i = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buff = malloc(BUFFER_SIZE + 1);
@@ -105,7 +103,6 @@ char	*get_next_line(int fd)
 		}
 		buff[r] = '\0';
 		line = ft_strjoin_gnl(line, buff);
-		i++;
 	}
 	free(buff);
 	buff = get_res(line);
