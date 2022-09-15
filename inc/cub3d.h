@@ -6,7 +6,7 @@
 /*   By: mclerico <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 20:24:15 by mclerico          #+#    #+#             */
-/*   Updated: 2022/09/15 18:02:55 by mclerico         ###   ########.fr       */
+/*   Updated: 2022/09/15 18:36:46 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ int		ft_start(t_cub *prog);
 
 # define WALL 0xCCFFCC
 # define WALL_2 0x66FF66
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 720
+# define HEIGHT 480
 # define X_OFFSET 20
 # define Y_OFFSET 20
 # define NO 0
