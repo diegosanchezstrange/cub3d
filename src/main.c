@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:31:29 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/09/10 21:04:12 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/15 18:53:21 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@ int	ft_init_params(t_cub *prog)
 	prog->so_path = NULL;
 	prog->we_path = NULL;
 	prog->ea_path = NULL;
+	prog->f_color[0] = 256;
+	prog->f_color[1] = 256;
+	prog->f_color[2] = 256;
+	prog->c_color[0] = 256;
+	prog->c_color[1] = 256;
+	prog->c_color[2] = 256;
 	if (!prog->params)
 		return (0);
 	return (1);

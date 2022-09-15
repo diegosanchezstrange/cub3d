@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:38:02 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/09/15 18:37:44 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/15 19:03:34 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,29 @@ int	ft_parse_map(t_cub *cub, char *line)
 	return (1);
 }
 
+int	ft_check_resources(t_cub *cub)
+{
+	int	i;
+
+	i = 0;
+	if (cub->no_path == NULL || cub->so_path == NULL
+		|| cub->we_path == NULL || cub->ea_path == NULL )
+	{
+		printf("Error in paths\n");
+		return (0);
+	}
+	while (i < 3)
+	{
+		if (cub->f_color[i] == 256 || cub->c_color[i] == 256)
+		{
+			printf("Error in colors\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	ft_parse_line(char *line, t_cub *cub, int *num)
 {
 	int	ret;
@@ -80,6 +103,8 @@ int	ft_parse_line(char *line, t_cub *cub, int *num)
 	else
 	{
 		*num = -1;
+		if (!ft_check_resources(cub))
+			return (0);
 		ret = ft_parse_map(cub, line);
 	}
 	if (ret == 0)

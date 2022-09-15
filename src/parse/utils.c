@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:35:30 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/09/10 21:04:49 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/15 18:54:08 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,16 @@ int	check_direction_path(t_cub *cub, char **split, int *num)
 	img = get_xpm_image(cub, path);
 	if (!img.img)
 		return (0);
-	if (!ft_strncmp(split[0], "NO", 2))
+	if (!ft_strncmp(split[0], "NO", 2) && !cub->no_path)
 		cub->no_path = path;
-	else if (!ft_strncmp(split[0], "SO", 2))
+	else if (!ft_strncmp(split[0], "SO", 2) && !cub->so_path)
 		cub->so_path = path;
-	else if (!ft_strncmp(split[0], "WE", 2))
+	else if (!ft_strncmp(split[0], "WE", 2) && !cub->we_path)
 		cub->we_path = path;
-	else if (!ft_strncmp(split[0], "EA", 2))
+	else if (!ft_strncmp(split[0], "EA", 2) && !cub->ea_path)
 		cub->ea_path = path;
+	else
+		return (0);
 	mlx_destroy_image(cub->mlx, img.img);
 	*num += 1;
 	return (1);
