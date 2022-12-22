@@ -6,7 +6,7 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:56:39 by dsanchez          #+#    #+#             */
-/*   Updated: 2021/10/01 17:25:47 by dsanchez         ###   ########.fr       */
+/*   Updated: 2022/09/15 18:05:35 by mclerico         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_putnbr(int nbr)
 	}
 	else
 		n = (unsigned int) nbr;
-	if (n >= 10 )
+	if (n >= 10)
 	{
 		c += ft_putnbr (n / 10);
 		c += ft_putnbr (n % 10);
@@ -41,7 +41,7 @@ int	ft_putnbr_u(unsigned int nbr)
 
 	c = 0;
 	nbr = (unsigned int) nbr;
-	if (nbr >= 10 )
+	if (nbr >= 10)
 	{
 		c += ft_putnbr (nbr / 10);
 		c += ft_putnbr (nbr % 10);

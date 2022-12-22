@@ -6,12 +6,13 @@
 /*   By: dsanchez <dsanchez@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:38:02 by dsanchez          #+#    #+#             */
-/*   Updated: 2022/07/25 20:27:08 by mclerico         ###   ########.fr       */
+/*   Updated: 2022/09/15 19:03:34 by dsanchez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 #include <fcntl.h>
+#include <stdio.h>
 
 int	ft_check_valid_map_line(t_cub *cub, char *line)
 {
@@ -33,8 +34,8 @@ int	ft_check_valid_map_line(t_cub *cub, char *line)
 		else if (ft_strchr("NSEW", line[i]) && cub->starting_way == 0)
 		{
 			cub->starting_way = line[i];
-			cub->starting_point.x = i;
-			cub->starting_point.y = cub->map_h;
+			cub->pos.x = (double)i;
+			cub->pos.y = (double)cub->map_h;
 		}
 		i++;
 	}
@@ -64,19 +65,50 @@ int	ft_parse_map(t_cub *cub, char *line)
 	return (1);
 }
 
+int	ft_check_resources(t_cub *cub)
+{
+	int	i;
+
+	i = 0;
+	if (cub->no_path == NULL || cub->so_path == NULL
+		|| cub->we_path == NULL || cub->ea_path == NULL )
+	{
+		printf("Error in paths\n");
+		return (0);
+	}
+	while (i < 3)
+	{
+		if (cub->f_color[i] == 256 || cub->c_color[i] == 256)
+		{
+			printf("Error in colors\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	ft_parse_line(char *line, t_cub *cub, int *num)
 {
 	int	ret;
 
-	if (*num < 6 && *num != -1)
+	if (ft_strlen(line) <= 1)
+	{
+		ret = *num != -1;
+		if (ret != 0)
+			free(line);
+	}
+	else if (*num < 6 && *num != -1)
 		ret = is_valid_param(cub, line, num);
 	else
 	{
 		*num = -1;
+		if (!ft_check_resources(cub))
+			return (0);
 		ret = ft_parse_map(cub, line);
 	}
 	if (ret == 0)
-		ft_printf("Error in : |%s|\n", line);
+		ft_printf("Error\n");
 	return (ret);
 }
 
@@ -90,18 +122,20 @@ int	ft_parse_file(char *filename, t_cub *cub)
 	if (fd == -1)
 		exit(1);
 	line = get_next_line(fd);
+	num = 0;
 	while (line)
 	{
-		if (ft_strlen(line) > 1)
+		if (!ft_parse_line(line, cub, &num))
 		{
-			if (!ft_parse_line(line, cub, &num))
-				return (0);
-		}
-		else if (num == -1)
+			free(line);
 			return (0);
+		}
 		line = get_next_line(fd);
 	}
 	close(fd);
+	free(line);
+	if (!cub->starting_way)
+		return (ft_error("No starting way\n"));
 	ft_resize_map(cub);
 	return (ft_check_closed(cub));
 }
